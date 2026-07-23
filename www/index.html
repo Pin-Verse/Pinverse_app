@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no"
+  />
+  <title>PinVerse</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="screen">
+    <!-- 顶部插画 -->
+    <div class="hero">
+      <img src="assets/plan-illustration.png" alt="PinVerse 角色卡片插画" />
+    </div>
+
+    <!-- 标题行 -->
+    <div class="app-header">
+      <div class="app-header__side app-header__side--left">
+        <!-- 信息 -->
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="#000" stroke-width="1.6"/>
+          <circle cx="12" cy="8" r="1.1" fill="#000"/>
+          <path d="M12 11V16.5" stroke="#000" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div class="app-header__center">
+        <span class="app-header__title">PinVerse-1</span>
+        <div class="dots">
+          <span class="is-active"></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <div class="app-header__side app-header__side--right">
+        <span>在线 42%</span>
+        <!-- 电池 -->
+        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <rect x="4" y="8" width="15" height="8" rx="2.5" stroke="#000" stroke-width="1.4"/>
+          <rect x="6" y="10" width="7" height="4" rx="1" fill="#000"/>
+          <path d="M20.5 10.5C21.5 10.9 21.5 13.1 20.5 13.5V10.5Z" fill="#000"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 主面板 -->
+    <div class="panel">
+      <div class="tabs">
+        <span class="tabs__item is-active" data-tab="plan">计划</span>
+        <span class="tabs__item" data-tab="role">角色</span>
+        <span class="tabs__item" data-tab="settings">设置</span>
+      </div>
+
+      <div class="views">
+        <!-- 视图：计划 -->
+        <section class="view is-active" data-view="plan">
+          <div class="card card--plan">
+            <div class="card__text">
+              <div class="card__title">早报</div>
+              <div class="card__subtitle">周一～五 7:00~8:00</div>
+            </div>
+            <!-- 设置配置（滑块）图标 -->
+            <svg class="icon card__action" width="17" height="16" viewBox="0 0 17 16" fill="none">
+              <path d="M2 4.5H11" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M15 4.5H16" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+              <circle cx="13" cy="4.5" r="2" stroke="#333" stroke-width="1.3"/>
+              <path d="M1 11.5H4" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M8 11.5H16" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+              <circle cx="6" cy="11.5" r="2" stroke="#333" stroke-width="1.3"/>
+            </svg>
+          </div>
+
+          <div class="view__spacer"></div>
+
+          <button class="pill-btn" type="button">新建计划</button>
+        </section>
+
+        <!-- 视图：角色 -->
+        <section class="view" data-view="role">
+          <div class="role-grid">
+            <div class="role-card is-selected">
+              <img class="role-card__avatar" src="assets/avatar-ryo.png" alt="山田凉" />
+              <div class="role-card__name">山田凉</div>
+              <div class="role-card__meta">好感度 36｜2026年7月23日</div>
+            </div>
+            <div class="role-card">
+              <img class="role-card__avatar" src="assets/avatar-ryo.png" alt="山田凉" />
+              <div class="role-card__name">山田凉</div>
+              <div class="role-card__meta">好感度 36｜2026年7月23日</div>
+            </div>
+          </div>
+
+          <div class="view__spacer"></div>
+
+          <button class="pill-btn" type="button">添加角色</button>
+        </section>
+
+        <!-- 视图：设置 -->
+        <section class="view" data-view="settings">
+          <div class="setting-row">
+            <span class="setting-row__label">面板样式</span>
+            <div class="dropdown" data-dropdown>
+              <button class="dropdown__toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <span class="dropdown__value">粉色</span>
+                <svg class="dropdown__chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 6L8 10L12 6" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <ul class="dropdown__menu" role="listbox">
+                <li class="dropdown__option is-selected" role="option" data-value="粉色">粉色</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="view__spacer"></div>
+
+          <button class="pill-btn" type="button">解绑设备</button>
+        </section>
+      </div>
+    </div>
+
+    <!-- Home 指示条 -->
+    <div class="home-indicator">
+      <span></span>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,392 @@
+/* ===== PinVerse · 计划页面 =====
+   还原自 Figma「PinVerse / 计划」(node 2:2)
+   设计基准：393 × 852 移动端屏幕 */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #ebeef2;
+  --panel: #ffffff;
+  --card-bg: #f3f3f3;
+  --card-border: rgba(163, 163, 163, 0.5);
+  --ring: #a3a3a3;
+  --ink: #000000;
+  --ink-80: rgba(0, 0, 0, 0.8);
+  --ink-60: rgba(0, 0, 0, 0.6);
+  --btn-text: #636467;
+  /* 角色卡片（蓝色系） */
+  --role-card-bg: #eceefd;
+  --role-card-border: #d4dafa;
+  --role-ring-inner: #f8f9ff;
+  --role-ring-outer: #bdc8ff;
+  --font: "MiSans", -apple-system, "PingFang SC", "Microsoft YaHei",
+    system-ui, sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  font-family: var(--font);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  justify-content: center;
+}
+
+/* 手机屏幕容器：以 393 为基准，居中 */
+.screen {
+  position: relative;
+  width: 100%;
+  max-width: 393px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+/* ---------- 顶部插画 ---------- */
+.hero {
+  padding: 24px 24px 0;
+  flex-shrink: 0;
+}
+
+.hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ---------- 头部标题行 ---------- */
+.app-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 12px 20px 0;
+  flex-shrink: 0;
+}
+
+.app-header__side {
+  display: flex;
+  align-items: center;
+  min-width: 92px;
+}
+
+.app-header__side--right {
+  justify-content: flex-end;
+  gap: 6px;
+  color: var(--ink-60);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.app-header__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.app-header__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-80);
+}
+
+.dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c4c4c4;
+}
+
+.dots span.is-active {
+  background: #8a8a8a;
+}
+
+.icon {
+  display: block;
+}
+
+/* ---------- 主面板 ---------- */
+.panel {
+  position: relative;
+  margin: 24px 20px;
+  padding: 18px 21px 23px;
+  background: var(--panel);
+  border-radius: 14px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 标签页 */
+.tabs {
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.tabs__item {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink-60);
+  cursor: pointer;
+}
+
+.tabs__item.is-active {
+  font-size: 20px;
+  color: var(--ink);
+}
+
+/* ---------- 视图容器（计划 / 角色 切换） ---------- */
+.views {
+  position: relative;
+  flex: 1 1 auto;
+}
+
+.view {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.view.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* 占位撑开，把底部按钮推到面板底部 */
+.view__spacer {
+  flex: 1 1 auto;
+}
+
+/* ---------- 卡片（计划视图） ---------- */
+.card {
+  position: relative;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 4px var(--ring);
+  margin: 4px 0 4px;
+}
+
+.card--plan {
+  height: 63px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+.card__subtitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-60);
+}
+
+.card__action {
+  color: #333;
+}
+
+/* ---------- 角色网格（角色视图） ---------- */
+.role-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 4px 0;
+}
+
+.role-card {
+  width: 140px;
+  height: 140px;
+  padding: 10px 4px 8px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 4px var(--ring);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 选中态：卡片变蓝 */
+.role-card.is-selected {
+  background: var(--role-card-bg);
+  border-color: var(--role-card-border);
+  box-shadow: 0 0 0 3px var(--role-ring-inner), 0 0 0 4px var(--role-ring-outer);
+}
+
+.role-card__avatar {
+  width: 83px;
+  height: 83px;
+  object-fit: contain;
+  display: block;
+}
+
+.role-card__name {
+  margin-top: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.role-card__meta {
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink-60);
+  white-space: nowrap;
+}
+
+/* ---------- 设置视图 ---------- */
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 30px;
+  margin: 4px 0;
+}
+
+.setting-row__label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 8px 0 12px;
+  background: #fafafa;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px #d8d7df, inset 0 1px 0 0 #fff;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.dropdown__chevron {
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.dropdown.is-open .dropdown__chevron {
+  transform: rotate(180deg);
+}
+
+/* 弹出菜单 */
+.dropdown__menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 77px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: #fafafa;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px #d8d7df, 0 6px 16px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 10;
+}
+
+.dropdown.is-open .dropdown__menu {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.dropdown__option {
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.dropdown__option:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.dropdown__option.is-selected {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* ---------- 底部胶囊按钮（新建计划 / 添加角色 / 解绑设备） ---------- */
+.pill-btn {
+  height: 42px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 4px var(--ring);
+  color: var(--btn-text);
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* ---------- Home 指示条 ---------- */
+.home-indicator {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.home-indicator span {
+  width: 139px;
+  height: 5px;
+  border-radius: 3px;
+  background: #000;
+}

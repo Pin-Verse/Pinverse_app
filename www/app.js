@@ -1,6 +1,7 @@
-// PinVerse · 标签页切换
+// PinVerse · 计划页
 // 点击「计划 / 角色」标签，在对应视图之间切换（带淡入过渡）。
 // 「设置」暂无对应视图，点击时不切换。
+// 下拉栏组件逻辑见 dropdown.js（index.html / plan-edit.html 共用）。
 
 (function () {
   const tabs = document.querySelectorAll('.tabs__item');
@@ -31,39 +32,36 @@
     });
   });
 
-  // ---------- 下拉栏（面板样式） ----------
-  document.querySelectorAll('[data-dropdown]').forEach((dropdown) => {
-    const toggle = dropdown.querySelector('.dropdown__toggle');
-    const value = dropdown.querySelector('.dropdown__value');
-    const options = dropdown.querySelectorAll('.dropdown__option');
+  // ---------- 计划：在 plan-edit.html 中确认删除后，回到列表显示空状态 ----------
+  const planCard = document.getElementById('planCard');
+  const planEmpty = document.getElementById('planEmpty');
+  function syncPlanDeletedState() {
+    const deleted = localStorage.getItem('pinverse:planDeleted') === '1';
+    if (planCard) planCard.classList.toggle('is-hidden', deleted);
+    if (planEmpty) planEmpty.classList.toggle('is-visible', deleted);
+  }
+  syncPlanDeletedState();
 
-    function close() {
-      dropdown.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
-    }
-
-    toggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const opening = !dropdown.classList.contains('is-open');
-      dropdown.classList.toggle('is-open', opening);
-      toggle.setAttribute('aria-expanded', String(opening));
-    });
-
-    options.forEach((option) => {
-      option.addEventListener('click', () => {
-        options.forEach((o) => o.classList.remove('is-selected'));
-        option.classList.add('is-selected');
-        value.textContent = option.dataset.value;
-        close();
-      });
+  // ---------- 跳转到其他页面（如 plan-edit.html / role-add.html）前先播放退出动效，避免切换生硬 ----------
+  // 凡是需要该过渡的站内跳转链接，都标注 [data-nav-link]。
+  const screen = document.querySelector('.screen');
+  document.querySelectorAll('a[data-nav-link]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const href = link.getAttribute('href');
+      screen.classList.add('is-leaving');
+      setTimeout(() => {
+        location.href = href;
+      }, 180);
     });
   });
 
-  // 点击空白处收起所有下拉栏
-  document.addEventListener('click', () => {
-    document.querySelectorAll('[data-dropdown].is-open').forEach((d) => {
-      d.classList.remove('is-open');
-      d.querySelector('.dropdown__toggle').setAttribute('aria-expanded', 'false');
-    });
+  // ---------- 从 plan-edit.html 用 history.back() 返回时，若命中 bfcache，
+  // 页面会带着离开前加的 is-leaving（淡出）状态被直接恢复，这里去掉它 ----------
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+      screen.classList.remove('is-leaving');
+      syncPlanDeletedState();
+    }
   });
 })();

@@ -13,18 +13,15 @@
   <div class="screen">
     <!-- 顶部插画 -->
     <div class="hero">
-      <img src="assets/plan-illustration.png" alt="PinVerse 角色卡片插画" />
+      <img src="assets/plan-illustration.png" alt="PinVerse 角色卡片插画" decoding="async" />
     </div>
 
     <!-- 标题行 -->
     <div class="app-header">
       <div class="app-header__side app-header__side--left">
-        <!-- 信息 -->
-        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="9" stroke="#000" stroke-width="1.6"/>
-          <circle cx="12" cy="8" r="1.1" fill="#000"/>
-          <path d="M12 11V16.5" stroke="#000" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
+        <!-- 在线状态 -->
+        <span class="status-dot"></span>
+        <span>在线</span>
       </div>
 
       <div class="app-header__center">
@@ -37,7 +34,7 @@
       </div>
 
       <div class="app-header__side app-header__side--right">
-        <span>在线 42%</span>
+        <span>42%</span>
         <!-- 电池 -->
         <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
           <rect x="4" y="8" width="15" height="8" rx="2.5" stroke="#000" stroke-width="1.4"/>
@@ -58,37 +55,41 @@
       <div class="views">
         <!-- 视图：计划 -->
         <section class="view is-active" data-view="plan">
-          <div class="card card--plan">
+          <div class="card card--plan" id="planCard">
             <div class="card__text">
               <div class="card__title">早报</div>
               <div class="card__subtitle">周一～五 7:00~8:00</div>
             </div>
-            <!-- 设置配置（滑块）图标 -->
-            <svg class="icon card__action" width="17" height="16" viewBox="0 0 17 16" fill="none">
-              <path d="M2 4.5H11" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
-              <path d="M15 4.5H16" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
-              <circle cx="13" cy="4.5" r="2" stroke="#333" stroke-width="1.3"/>
-              <path d="M1 11.5H4" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
-              <path d="M8 11.5H16" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
-              <circle cx="6" cy="11.5" r="2" stroke="#333" stroke-width="1.3"/>
-            </svg>
+            <!-- 设置配置（滑块）图标：点击进入「具体日程」编辑界面 -->
+            <a class="card__action" href="plan-edit.html?mode=edit" aria-label="具体日程设置" data-nav-link>
+              <svg class="icon" width="17" height="16" viewBox="0 0 17 16" fill="none">
+                <path d="M2 4.5H11" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+                <path d="M15 4.5H16" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+                <circle cx="13" cy="4.5" r="2" stroke="#333" stroke-width="1.3"/>
+                <path d="M1 11.5H4" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+                <path d="M8 11.5H16" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+                <circle cx="6" cy="11.5" r="2" stroke="#333" stroke-width="1.3"/>
+              </svg>
+            </a>
           </div>
+
+          <div class="plan-empty" id="planEmpty">暂无计划</div>
 
           <div class="view__spacer"></div>
 
-          <button class="pill-btn" type="button">新建计划</button>
+          <a class="pill-btn" href="plan-edit.html?mode=add" data-nav-link>新建计划</a>
         </section>
 
         <!-- 视图：角色 -->
         <section class="view" data-view="role">
           <div class="role-grid">
             <div class="role-card is-selected">
-              <img class="role-card__avatar" src="assets/avatar-ryo.png" alt="山田凉" />
+              <img class="role-card__avatar" src="assets/avatar-ryo.png" alt="山田凉" decoding="async" />
               <div class="role-card__name">山田凉</div>
               <div class="role-card__meta">好感度 36｜2026年7月23日</div>
             </div>
             <div class="role-card">
-              <img class="role-card__avatar" src="assets/avatar-ryo.png" alt="山田凉" />
+              <img class="role-card__avatar" src="assets/avatar-ryo.png" alt="山田凉" decoding="async" />
               <div class="role-card__name">山田凉</div>
               <div class="role-card__meta">好感度 36｜2026年7月23日</div>
             </div>
@@ -96,11 +97,16 @@
 
           <div class="view__spacer"></div>
 
-          <button class="pill-btn" type="button">添加角色</button>
+          <a class="pill-btn" href="role-add.html" data-nav-link>添加角色</a>
         </section>
 
         <!-- 视图：设置 -->
         <section class="view" data-view="settings">
+          <div class="setting-row">
+            <span class="setting-row__label">设备名称</span>
+            <input class="setting-input" type="text" placeholder="请输入" />
+          </div>
+
           <div class="setting-row">
             <span class="setting-row__label">面板样式</span>
             <div class="dropdown" data-dropdown>
@@ -116,6 +122,16 @@
             </div>
           </div>
 
+          <div class="setting-row">
+            <span class="setting-row__label">配置新网络</span>
+            <button class="setting-btn" type="button">配网</button>
+          </div>
+
+          <div class="setting-row">
+            <span class="setting-row__label">重置设备</span>
+            <button class="setting-btn setting-btn--danger" type="button">重置</button>
+          </div>
+
           <div class="view__spacer"></div>
 
           <button class="pill-btn" type="button">解绑设备</button>
@@ -129,6 +145,7 @@
     </div>
   </div>
 
+  <script src="dropdown.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

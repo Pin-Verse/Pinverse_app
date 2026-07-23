@@ -51,6 +51,31 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--bg);
+  animation: screen-enter 0.28s ease;
+}
+
+/* 页面切换动效：进入 plan-edit.html 前的退出过渡（见 app.js） */
+.screen.is-leaving {
+  animation: screen-leave 0.2s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes screen-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes screen-leave {
+  to {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
 }
 
 /* ---------- 顶部插画 ---------- */
@@ -78,6 +103,21 @@ body {
   display: flex;
   align-items: center;
   min-width: 92px;
+}
+
+.app-header__side--left {
+  gap: 6px;
+  color: var(--ink-60);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34c759;
+  flex-shrink: 0;
 }
 
 .app-header__side--right {
@@ -216,7 +256,30 @@ body {
 }
 
 .card__action {
+  display: inline-flex;
   color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 计划列表：删除后的空状态（默认隐藏，见 app.js） */
+.plan-empty {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  height: 63px;
+  margin: 4px 0;
+  color: var(--ink-60);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.plan-empty.is-visible {
+  display: flex;
+}
+
+.is-hidden {
+  display: none !important;
 }
 
 /* ---------- 角色网格（角色视图） ---------- */
@@ -286,6 +349,49 @@ body {
   font-size: 16px;
   font-weight: 600;
   color: var(--ink);
+}
+
+.setting-input {
+  width: 156px;
+  height: 30px;
+  padding: 0 8px;
+  background: #fafafa;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px #d8d7df, inset 0 1px 0 0 #fff;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: center;
+}
+
+.setting-input::placeholder {
+  color: var(--ink-60);
+}
+
+.setting-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 77px;
+  height: 30px;
+  padding: 0 12px;
+  background: #fafafa;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px #d8d7df, inset 0 1px 0 0 #fff;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.setting-btn--danger {
+  background: #ff2b2b;
+  box-shadow: 0 0 0 1px #ffbdbd, inset 0 1px 0 0 #ff2b2b;
+  color: #fff;
 }
 
 .dropdown {
@@ -373,6 +479,11 @@ body {
   font-weight: 600;
   cursor: pointer;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-sizing: border-box;
 }
 
 /* ---------- Home 指示条 ---------- */

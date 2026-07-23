@@ -1,0 +1,249 @@
+/* ===== PinVerse · 计划详情 / 新增计划 =====
+   还原自 Figma「PinVerse / 计划」(node 198:151)
+   独立页面：通过「新建计划」按钮（?mode=add，右上角无删除）
+   或「具体日程」设置配置图标（?mode=edit，右上角有删除）进入 */
+
+.plan-edit-screen {
+  width: 100%;
+  max-width: 393px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  animation: plan-edit-enter 0.28s ease;
+}
+
+/* 返回 / 删除确认后的退出过渡（见 plan-edit.js） */
+.plan-edit-screen.is-leaving {
+  animation: plan-edit-leave 0.2s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes plan-edit-enter {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes plan-edit-leave {
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+/* ---------- 头部：返回 / 标题 / 删除 ---------- */
+.plan-edit__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 20px 16px;
+  flex-shrink: 0;
+}
+
+.plan-edit__icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.plan-edit__icon-btn--danger {
+  background: rgba(255, 43, 43, 0.12);
+}
+
+/* 新增计划：不展示删除按钮，但保留占位以让标题保持居中 */
+.plan-edit__icon-btn.is-hidden-placeholder {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.plan-edit__title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ---------- 内容区 ---------- */
+.plan-edit__body {
+  flex: 1 1 auto;
+  padding: 0 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.plan-edit__card {
+  background: var(--panel);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.plan-edit__spacer {
+  flex: 1 1 auto;
+}
+
+.plan-edit__card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.plan-edit__card-subtitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-60);
+  line-height: 1.5;
+}
+
+.plan-edit__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 30px;
+}
+
+.plan-edit__row + .plan-edit__row {
+  margin-top: 16px;
+}
+
+.plan-edit__row-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.plan-edit__section-label {
+  margin-bottom: 16px;
+}
+
+/* ---------- 星期选择（显示日期） ---------- */
+.weekday-picker {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.weekday-picker__item {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--card-bg);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.weekday-picker__item.is-selected {
+  background: var(--role-card-bg);
+  box-shadow: 0 0 0 1px var(--role-card-border);
+}
+
+/* ---------- 时间范围 ---------- */
+.time-range {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.time-range .dropdown {
+  flex: 1 1 0;
+}
+
+.time-range .dropdown__toggle {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.time-range__sep {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+
+/* ---------- 删除二次确认对话框 ---------- */
+.confirm-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.confirm-dialog.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.confirm-dialog__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.confirm-dialog__box {
+  position: relative;
+  width: 270px;
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.confirm-dialog__text {
+  padding: 22px 16px;
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.confirm-dialog__actions {
+  display: flex;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.confirm-dialog__btn {
+  flex: 1 1 0;
+  height: 44px;
+  border: none;
+  background: transparent;
+  font-family: var(--font);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.confirm-dialog__btn--cancel {
+  font-weight: 700;
+  color: #ff2b2b;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.confirm-dialog__btn--confirm {
+  font-weight: 600;
+  color: var(--ink-60);
+}

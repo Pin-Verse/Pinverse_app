@@ -6,6 +6,7 @@
   const TOKEN_KEY = 'pinverse:token';
   const listEl = document.getElementById('characterList');
   const statusEl = document.getElementById('characterListStatus');
+  let binding = false;
 
   if (!listEl || !statusEl) return;
 
@@ -56,11 +57,29 @@
     return parts.join('｜');
   }
 
-  function createCard(character, index) {
+  function characterId(character) {
+    return character.id ?? character.character_id ?? null;
+  }
+
+  function boundCharacterId(device) {
+    return device?.character_id ?? device?.bound_character_id ?? device?.character?.id ?? null;
+  }
+
+  function selectCard(characterId) {
+    listEl.querySelectorAll('.role-card').forEach((card) => {
+      card.classList.toggle(
+        'is-selected',
+        characterId !== null && String(card.dataset.characterId) === String(characterId)
+      );
+    });
+  }
+
+  function createCard(character) {
     const card = document.createElement('div');
     const name = character.name ?? character.character_name ?? '未命名角色';
-    card.className = 'role-card' + (index === 0 ? ' is-selected' : '');
-    if (character.id !== undefined) card.dataset.characterId = character.id;
+    const id = characterId(character);
+    card.className = 'role-card';
+    if (id !== null) card.dataset.characterId = id;
 
     const avatar = document.createElement('img');
     avatar.className = 'role-card__avatar';
@@ -129,12 +148,73 @@
       if (!response.ok) throw new Error('HTTP ' + response.status);
       const characters = extractCharacters(await response.json());
       listEl.replaceChildren(...characters.map(createCard));
+      const device = window.PinVerseDevices?.getCurrent();
+      const selectedId = boundCharacterId(device);
+      if (selectedId !== null) selectCard(selectedId);
       setStatus(characters.length ? '' : '暂无角色');
     } catch (err) {
       listEl.replaceChildren();
       setStatus('角色加载失败，请稍后重试');
     }
   }
+
+  async function bindCharacter(deviceId, characterId) {
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) return false;
+
+    try {
+      const response = await fetch(
+        API_HOST + '/devices/' + encodeURIComponent(deviceId) + '/bind',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ character_id: characterId }),
+        }
+      );
+      const data = await response.json().catch(() => null);
+      return response.ok && !(data && data.error);
+    } catch (err) {
+      return false;
+    }
+  }
+
+  listEl.addEventListener('click', async (event) => {
+    const card = event.target.closest('.role-card');
+    if (!card || !listEl.contains(card) || binding || card.classList.contains('is-selected')) return;
+
+    const characterId = card.dataset.characterId;
+    const device = window.PinVerseDevices?.getCurrent();
+    if (!characterId || !device?.device_id) return;
+
+    binding = true;
+    listEl.classList.add('is-binding');
+    setStatus('正在绑定角色…');
+
+    const success = await bindCharacter(device.device_id, characterId);
+    binding = false;
+    listEl.classList.remove('is-binding');
+
+    if (!success) {
+      setStatus('角色绑定失败，请稍后重试');
+      return;
+    }
+
+    window.PinVerseDevices?.setCurrentCharacter(characterId, device.device_id);
+    const currentDevice = window.PinVerseDevices?.getCurrent();
+    const selectedId =
+      currentDevice?.device_id === device.device_id ? characterId : boundCharacterId(currentDevice);
+    selectCard(selectedId);
+    setStatus('');
+  });
+
+  window.PinVerseDevices?.onChange((device) => {
+    if (binding) return;
+    const selectedId = boundCharacterId(device);
+    if (selectedId !== null) selectCard(selectedId);
+  });
 
   loadCharacters();
 })();

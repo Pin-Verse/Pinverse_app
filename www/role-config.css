@@ -126,6 +126,24 @@
   margin-top: 20px;
 }
 
+.role-config__error {
+  display: none;
+  margin-top: 12px;
+  color: #d64545;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.role-config__error.is-visible {
+  display: block;
+}
+
+.role-config__card .pill-btn:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
 /* ---------- 性格二维面板 ---------- */
 .personality-panel {
   display: grid;

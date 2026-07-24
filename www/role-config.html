@@ -34,7 +34,7 @@
       <div class="role-config__card">
         <div class="setting-row">
           <span class="setting-row__label">角色名称</span>
-          <input class="setting-input" type="text" id="roleConfigName" placeholder="请输入" />
+          <input class="setting-input" type="text" id="roleConfigName" placeholder="请输入" maxlength="50" />
         </div>
         <div class="setting-row">
           <span class="setting-row__label">怎么称呼你</span>
@@ -60,6 +60,7 @@
           </div>
         </div>
 
+        <p class="role-config__error" id="roleConfigError" role="alert" aria-live="polite"></p>
         <button class="pill-btn" type="button" id="roleConfigSubmitBtn">完成配置</button>
       </div>
     </div>

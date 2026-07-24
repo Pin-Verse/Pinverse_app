@@ -112,6 +112,7 @@
     devices = list.map((d, i) => {
       const status = statuses[i];
       return {
+        ...d,
         device_id: d.device_id,
         device_name: d.device_name,
         online: status ? status.online : false,
@@ -130,6 +131,7 @@
   // getCurrent()      取当前选中设备的快照（无设备时为 null）
   // onChange(fn)      订阅当前设备变化；注册时立即回调一次当前值
   // setCurrentName()  设备名改动后同步到本地状态并重渲染（不发请求）
+  // setCurrentCharacter() 角色绑定成功后同步指定设备的角色（不发请求）
   window.PinVerseDevices = {
     getCurrent() {
       const device = currentDevice();
@@ -144,6 +146,13 @@
       if (!device) return;
       device.device_name = name;
       render();
+    },
+    setCurrentCharacter(characterId, deviceId) {
+      const device = devices.find((item) => item.device_id === deviceId);
+      if (!device) return;
+      device.character_id = characterId;
+      device.bound_character_id = characterId;
+      if (device === currentDevice()) emitChange();
     },
   };
 

@@ -28,16 +28,6 @@
   const initialTab = new URLSearchParams(location.search).get('tab');
   if (initialTab) switchTo(initialTab);
 
-  // ---------- 角色卡片（单选：选中变蓝） ----------
-  const roleGrid = document.querySelector('.role-grid');
-  roleGrid?.addEventListener('click', (event) => {
-    const card = event.target.closest('.role-card');
-    if (!card || !roleGrid.contains(card)) return;
-    roleGrid.querySelectorAll('.role-card').forEach((item) => {
-      item.classList.toggle('is-selected', item === card);
-    });
-  });
-
   // ---------- 计划：在 plan-edit.html 中确认删除后，回到列表显示空状态 ----------
   const planCard = document.getElementById('planCard');
   const planEmpty = document.getElementById('planEmpty');

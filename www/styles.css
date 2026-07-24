@@ -297,6 +297,10 @@ body {
   flex-shrink: 0;
 }
 
+.status-dot.is-offline {
+  background: #c4c4c4;
+}
+
 .app-header__side--right {
   justify-content: flex-end;
   gap: 6px;

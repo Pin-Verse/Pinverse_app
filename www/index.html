@@ -63,24 +63,22 @@
     </div>
 
     <!-- 标题行 -->
-    <div class="app-header">
+    <div class="app-header" id="deviceStatusHeader">
       <div class="app-header__side app-header__side--left">
         <!-- 在线状态 -->
-        <span class="status-dot"></span>
-        <span>在线</span>
+        <span class="status-dot" id="deviceStatusDot"></span>
+        <span id="deviceStatusText">--</span>
       </div>
 
       <div class="app-header__center">
-        <span class="app-header__title">PinVerse-1</span>
-        <div class="dots">
+        <span class="app-header__title" id="deviceStatusTitle">--</span>
+        <div class="dots" id="deviceStatusDots">
           <span class="is-active"></span>
-          <span></span>
-          <span></span>
         </div>
       </div>
 
       <div class="app-header__side app-header__side--right">
-        <span>42%</span>
+        <span id="deviceStatusBattery">--</span>
         <!-- 电池 -->
         <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
           <rect x="4" y="8" width="15" height="8" rx="2.5" stroke="#000" stroke-width="1.4"/>
@@ -201,6 +199,7 @@
 
   <script src="config.js"></script>
   <script src="dropdown.js"></script>
+  <script src="device-status.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

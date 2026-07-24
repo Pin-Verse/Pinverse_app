@@ -35,7 +35,7 @@
   }
 
   // ---------- 返回上一页（带退出动效） ----------
-  // 用 history.back() 而非 location.href，让浏览器尽量用 bfcache 还原 index.html，
+  // 用 history.back() 而非 location.href，让浏览器尽量用 bfcache 还原 home.html，
   // 避免重新加载整份首页（含较大的顶部插画）造成的卡顿。
   function goBack() {
     screen.classList.add('is-leaving');
@@ -43,7 +43,7 @@
       if (history.length > 1) {
         history.back();
       } else {
-        location.href = 'index.html';
+        location.href = 'home.html';
       }
     }, 180);
   }

@@ -74,7 +74,7 @@
 
     screen.classList.add('is-leaving');
     setTimeout(() => {
-      location.href = 'index.html';
+      location.href = 'home.html';
     }, 180);
   }
 

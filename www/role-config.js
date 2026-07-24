@@ -85,7 +85,7 @@
     );
     screen.classList.add('is-leaving');
     setTimeout(() => {
-      location.href = 'index.html?tab=role';
+      location.href = 'home.html?tab=role';
     }, 180);
   });
 })();

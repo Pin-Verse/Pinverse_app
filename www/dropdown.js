@@ -1,6 +1,6 @@
 // PinVerse · 通用下拉栏组件
 // 页面内所有 [data-dropdown] 元素共用同一套展开 / 收起 / 选中逻辑。
-// index.html（面板样式）与 plan-edit.html（所在地 / 日历链接 / 时间）共用此文件。
+// home.html（面板样式）与 plan-edit.html（所在地 / 日历链接 / 时间）共用此文件。
 
 (function () {
   document.querySelectorAll('[data-dropdown]').forEach((dropdown) => {

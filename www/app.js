@@ -1,7 +1,7 @@
 // PinVerse · 计划页
 // 点击「计划 / 角色」标签，在对应视图之间切换（带淡入过渡）。
 // 「设置」暂无对应视图，点击时不切换。
-// 下拉栏组件逻辑见 dropdown.js（index.html / plan-edit.html 共用）。
+// 下拉栏组件逻辑见 dropdown.js（home.html / plan-edit.html 共用）。
 
 (function () {
   const tabs = document.querySelectorAll('.tabs__item');
@@ -24,7 +24,7 @@
   });
 
   // ---------- 从其他页面跳转回来时，按 ?tab= 指定要展示的标签页 ----------
-  // 例如 role-config.html 完成配置后跳转到 index.html?tab=role，直接展示「角色」标签页。
+  // 例如 role-config.html 完成配置后跳转到 home.html?tab=role，直接展示「角色」标签页。
   const initialTab = new URLSearchParams(location.search).get('tab');
   if (initialTab) switchTo(initialTab);
 

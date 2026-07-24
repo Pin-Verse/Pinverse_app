@@ -108,50 +108,25 @@ body {
   display: block;
 }
 
-/* 底部投影 */
+/* 底部投影：卡片下方的柔和阴影（比卡片本身更宽，营造漂浮感） */
 .device__shadow {
   position: absolute;
-  left: 0;
-  top: 53.14%;
-  width: 100%;
-  height: 46.85%;
-  object-fit: contain;
-}
-
-/* 背后第二张卡片：只露出边角，营造堆叠层次 */
-.device__back {
-  position: absolute;
-  left: 7.395%;
-  top: 2.286%;
-  width: 84.887%;
-  height: 74.29%;
-}
-
-.device__glow {
-  position: absolute;
-  left: 3.537%;
-  top: 0;
-  width: 88.746%;
-  height: 76.573%;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.device__glow-img {
-  position: absolute;
-  left: -3.99%;
-  top: -23.29%;
-  width: 109.78%;
-  height: 161.51%;
+  left: 6%;
+  top: 62%;
+  width: 88%;
+  height: 24%;
+  background: rgba(50, 60, 80, 0.18);
+  border-radius: 50%;
+  filter: blur(3cqw);
 }
 
 /* 正面卡片底板 */
 .device__base {
   position: absolute;
-  left: 12.464%;
-  top: 8.57%;
-  width: 73.388%;
-  height: 69.077%;
+  left: 6.109%;
+  top: 0%;
+  width: 86.816%;
+  height: 81.71%;
   background: #fff;
   border-radius: 3cqw;
 }
@@ -159,71 +134,79 @@ body {
 /* 左侧谷子图片：徽章式谷子照片 */
 .device__photo {
   position: absolute;
-  left: 16.813%;
-  top: 18.231%;
-  width: 27.155%;
-  height: 47.822%;
+  left: 11.254%;
+  top: 11.427%;
+  width: 32.125%;
+  height: 56.583%;
   border-radius: 50%;
   object-fit: cover;
 }
 
-/* 粉色外壳图层：卡片轮廓线 + 粉色装饰条 + 贴纸 + 功能图标 */
+/* 粉色外壳图层：卡片轮廓线 + 粉色装饰条 + 贴纸光晕 + 功能图标 */
 .device__frame {
   position: absolute;
-  left: 13.552%;
-  top: 10.505%;
-  width: 71.756%;
-  height: 62.798%;
+  left: 7.395%;
+  top: 2.286%;
+  width: 84.887%;
+  height: 74.29%;
   pointer-events: none;
 }
 
 .device__bar {
   position: absolute;
-  left: 13.552%;
+  left: 7.395%;
   background: #ffb5ed;
   border-radius: 999px;
 }
 
 .device__bar--top {
-  top: 14.851%;
-  width: 32.877%;
-  height: 1.932%;
+  top: 7.428%;
+  width: 38.895%;
+  height: 2.286%;
 }
 
 .device__bar--bottom {
-  width: 71.755%;
-  top: 69.437%;
-  height: 3.864%;
+  width: 84.887%;
+  top: 71.997%;
+  height: 4.572%;
 }
 
 .device__dot {
   position: absolute;
-  width: 0.544%;
-  height: 0.966%;
-  top: 18.231%;
+  width: 0.643%;
+  height: 1.143%;
+  top: 11.427%;
   background: #ffb5ed;
   border-radius: 50%;
 }
 
-.device__dot--1 { left: 41.808%; }
-.device__dot--2 { left: 43.178%; }
-.device__dot--3 { left: 44.265%; }
+.device__dot--1 { left: 40.836%; }
+.device__dot--2 { left: 42.443%; }
+.device__dot--3 { left: 43.729%; }
 
 .device__dot--spark {
-  left: 14.91%;
-  top: 17.75%;
-  width: 2.174%;
-  height: 3.864%;
+  left: 9.003%;
+  top: 10.855%;
+  width: 2.572%;
+  height: 4.572%;
 }
 
+/* 贴纸光晕：放大 + 模糊的底层副本，营造发光轮廓 */
+.device__glow,
 .device__sticker {
   position: absolute;
-  left: 10.29%;
-  top: 8.57%;
-  width: 75.019%;
-  height: 64.72%;
+  left: 3.537%;
+  top: 0%;
+  width: 88.746%;
+  height: 76.573%;
   overflow: hidden;
   pointer-events: none;
+}
+
+.device__glow {
+  filter: blur(2px);
+  opacity: 0.55;
+  transform: scale(1.12);
 }
 
 .device__sticker-img {
@@ -236,39 +219,39 @@ body {
 
 .device__icon {
   position: absolute;
-  width: 2.718%;
-  height: 4.831%;
+  width: 3.215%;
+  height: 5.714%;
 }
 
 .device__icon--share {
   width: 1.929%;
   height: 3.429%;
-  left: 43.45%;
-  top: 11.47%;
+  left: 42.766%;
+  top: 3.429%;
 }
 
 .device__icon--heart {
-  left: 17.084%;
-  top: 61.437%;
+  left: 11.575%;
+  top: 62.546%;
 }
 
 .device__icon--comment {
-  left: 20.392%;
-  top: 61.216%;
+  left: 15.488%;
+  top: 62.284%;
 }
 
 .device__icon--bookmark {
-  left: 42.363%;
-  top: 61.437%;
+  left: 41.478%;
+  top: 62.546%;
 }
 
 /* 文本图层 */
 .device__text {
   position: absolute;
-  left: 48.615%;
-  top: 39.483%;
-  width: 32.448%;
-  height: 25.93%;
+  left: 48.875%;
+  top: 36.57%;
+  width: 38.386%;
+  height: 30.674%;
   background: #e3e8ee;
   border-radius: 2.5cqw;
   display: flex;
@@ -278,7 +261,7 @@ body {
 
 .device__text p {
   margin: 0;
-  font-size: 1.7cqw;
+  font-size: 2cqw;
   line-height: 1.4;
   color: #000;
   word-break: break-word;

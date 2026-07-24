@@ -487,19 +487,3 @@ body {
   text-decoration: none;
   box-sizing: border-box;
 }
-
-/* ---------- Home 指示条 ---------- */
-.home-indicator {
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.home-indicator span {
-  width: 139px;
-  height: 5px;
-  border-radius: 3px;
-  background: #000;
-}

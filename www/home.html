@@ -126,18 +126,8 @@
 
         <!-- 视图：角色 -->
         <section class="view" data-view="role">
-          <div class="role-grid">
-            <div class="role-card is-selected">
-              <img class="role-card__avatar" src="assets/avatar-ryo.png" alt="山田凉" decoding="async" />
-              <div class="role-card__name">山田凉</div>
-              <div class="role-card__meta">好感度 36｜2026年7月23日</div>
-            </div>
-            <div class="role-card">
-              <img class="role-card__avatar" src="assets/avatar-ryo.png" alt="山田凉" decoding="async" />
-              <div class="role-card__name">山田凉</div>
-              <div class="role-card__meta">好感度 36｜2026年7月23日</div>
-            </div>
-          </div>
+          <div class="role-grid" id="characterList" aria-live="polite"></div>
+          <div class="role-list-status is-visible" id="characterListStatus">正在加载角色…</div>
 
           <div class="view__spacer"></div>
 
@@ -201,6 +191,7 @@
   <script src="dropdown.js"></script>
   <script src="device-status.js"></script>
   <script src="device-name.js"></script>
+  <script src="characters.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

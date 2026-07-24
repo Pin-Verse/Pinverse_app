@@ -29,11 +29,12 @@
   if (initialTab) switchTo(initialTab);
 
   // ---------- 角色卡片（单选：选中变蓝） ----------
-  const roleCards = document.querySelectorAll('.role-card');
-  roleCards.forEach((card) => {
-    card.addEventListener('click', () => {
-      roleCards.forEach((c) => c.classList.remove('is-selected'));
-      card.classList.add('is-selected');
+  const roleGrid = document.querySelector('.role-grid');
+  roleGrid?.addEventListener('click', (event) => {
+    const card = event.target.closest('.role-card');
+    if (!card || !roleGrid.contains(card)) return;
+    roleGrid.querySelectorAll('.role-card').forEach((item) => {
+      item.classList.toggle('is-selected', item === card);
     });
   });
 

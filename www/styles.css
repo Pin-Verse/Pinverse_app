@@ -498,10 +498,24 @@ body {
 
 .role-card__avatar {
   width: min(83px, 72%);
-  height: auto;
   aspect-ratio: 1 / 1;
-  object-fit: contain;
+  object-fit: cover;
+  border-radius: 4px;
   display: block;
+}
+
+.role-list-status {
+  display: none;
+  min-height: 63px;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-60);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.role-list-status.is-visible {
+  display: flex;
 }
 
 .role-card__name {

@@ -6,15 +6,19 @@
 window.PinVerseUploads = (function () {
   const TOKEN_KEY = 'pinverse:token';
 
-  // data URL（拍照结果）→ Blob，避免 base64 字符串直接进网络请求。
-  function dataUrlToBlob(dataUrl) {
+  // data URL（拍照结果）→ File，避免 base64 字符串直接进网络请求。
+  // 必须是 File 而非 Blob：APK 内 CapacitorHttp 会劫持 fetch 并转换 body，
+  // 其转换逻辑只对 File 做 base64 编码，Blob 会被当成 JSON 序列化成 {}，
+  // 二进制在进入原生层前就丢失了（Web 端两者行为一致）。
+  function dataUrlToFile(dataUrl) {
     const [header, base64] = String(dataUrl).split(',');
     const match = /^data:([^;]+)/.exec(header || '');
     const mime = match ? match[1] : 'application/octet-stream';
     const binary = atob(base64 || '');
     const bytes = new Uint8Array(binary.length);
     for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-    return new Blob([bytes], { type: mime });
+    const ext = mime === 'image/png' ? 'png' : 'jpg';
+    return new File([bytes], 'avatar.' + ext, { type: mime });
   }
 
   // 上传角色头像并绑定到角色，成功返回图片 URL，失败抛出异常。
@@ -22,15 +26,15 @@ window.PinVerseUploads = (function () {
     const token = localStorage.getItem(TOKEN_KEY);
     if (!token) throw new Error('unauthorized');
 
-    const blob = dataUrlToBlob(dataUrl);
+    const file = dataUrlToFile(dataUrl);
     const query = characterId ? '?character_id=' + encodeURIComponent(characterId) : '';
     const response = await fetch(window.PINVERSE_API_HOST + '/upload/avatar' + query, {
       method: 'POST',
       headers: {
         Authorization: 'Bearer ' + token,
-        'Content-Type': blob.type || 'application/octet-stream',
+        'Content-Type': file.type || 'application/octet-stream',
       },
-      body: blob,
+      body: file,
     });
 
     if (!response.ok) throw new Error('HTTP ' + response.status);

@@ -3,6 +3,9 @@
 // 1. GET /users/me/devices 拿到当前用户名下的所有设备，取出 device_id 列表；
 // 2. 对每个 device_id 调用 GET /devices/{deviceId}/status 拿到实时状态；
 // 3. 合并两者渲染到 .app-header（在线指示灯 / 设备名 / 电量），并生成设备分页圆点。
+//
+// 同时对外暴露 window.PinVerseDevices，供其他脚本读取「当前选中设备」并订阅其变化
+// （如 device-name.js 修改设备名称），避免各处重复拉取设备列表。
 
 (function () {
   const API_HOST = window.PINVERSE_API_HOST;
@@ -20,6 +23,16 @@
 
   let devices = []; // [{ device_id, device_name, online, battery }]
   let currentIndex = 0;
+  const listeners = []; // 当前设备变化时的订阅者，见文件末尾的 window.PinVerseDevices
+
+  function currentDevice() {
+    return devices[currentIndex] || null;
+  }
+
+  function emitChange() {
+    const device = currentDevice();
+    listeners.forEach((fn) => fn(device ? Object.assign({}, device) : null));
+  }
 
   function authHeaders() {
     const token = localStorage.getItem(TOKEN_KEY);
@@ -73,6 +86,7 @@
       titleEl.textContent = '--';
       batteryEl.textContent = '--';
       dotsEl.innerHTML = '';
+      emitChange();
       return;
     }
 
@@ -82,6 +96,7 @@
     titleEl.textContent = device.device_name || device.device_id;
     batteryEl.textContent = typeof device.battery === 'number' ? device.battery + '%' : '--';
     renderDots();
+    emitChange();
   }
 
   async function loadDeviceStatus() {
@@ -110,6 +125,27 @@
 
     render();
   }
+
+  // ---------- 对外接口 ----------
+  // getCurrent()      取当前选中设备的快照（无设备时为 null）
+  // onChange(fn)      订阅当前设备变化；注册时立即回调一次当前值
+  // setCurrentName()  设备名改动后同步到本地状态并重渲染（不发请求）
+  window.PinVerseDevices = {
+    getCurrent() {
+      const device = currentDevice();
+      return device ? Object.assign({}, device) : null;
+    },
+    onChange(fn) {
+      listeners.push(fn);
+      fn(this.getCurrent());
+    },
+    setCurrentName(name) {
+      const device = currentDevice();
+      if (!device) return;
+      device.device_name = name;
+      render();
+    },
+  };
 
   loadDeviceStatus();
   setInterval(loadDeviceStatus, POLL_INTERVAL_MS);

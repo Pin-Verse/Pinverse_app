@@ -423,6 +423,12 @@ body {
   justify-content: space-between;
 }
 
+.plan-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .card__title {
   font-size: 16px;
   font-weight: 600;
@@ -555,6 +561,24 @@ body {
   font-size: 16px;
   font-weight: 600;
   color: var(--ink);
+}
+
+/* 标签下方带一行说明（如飞书日历的绑定时间） */
+.setting-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.setting-row__hint {
+  display: none;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-60);
+}
+
+.setting-row__hint.is-visible {
+  display: block;
 }
 
 .setting-input {
@@ -699,6 +723,34 @@ body {
   color: #c21a1d;
 }
 
+/* ---------- 轻提示（toast.js 动态插入） ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 64px;
+  z-index: 200;
+  max-width: 78%;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.82);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
 /* ---------- 二次确认对话框（删除计划 / 解绑设备等） ---------- */
 .confirm-dialog {
   position: fixed;
@@ -733,12 +785,23 @@ body {
   text-align: center;
 }
 
-.confirm-dialog__text {
+.confirm-dialog__content {
   padding: 22px 16px;
+}
+
+.confirm-dialog__text {
   font-family: var(--font);
   font-size: 16px;
   font-weight: 600;
   color: var(--ink);
+}
+
+.confirm-dialog__tip {
+  margin-top: 8px;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-60);
 }
 
 .confirm-dialog__actions {

@@ -99,29 +99,31 @@
       <div class="views">
         <!-- 视图：计划 -->
         <section class="view is-active" data-view="plan">
-          <div class="card card--plan" id="planCard">
-            <div class="card__text">
-              <div class="card__title">早报</div>
-              <div class="card__subtitle">周一～五 7:00~8:00</div>
+          <div class="plan-list" id="planList">
+            <div class="card card--plan is-hidden" id="planCard">
+              <div class="card__text">
+                <div class="card__title">早报</div>
+                <div class="card__subtitle"></div>
+              </div>
+              <!-- 设置配置（滑块）图标：点击进入「具体日程」编辑界面 -->
+              <a class="card__action" href="plan-edit.html?mode=edit" aria-label="具体日程设置" data-nav-link>
+                <svg class="icon" width="17" height="16" viewBox="0 0 17 16" fill="none">
+                  <path d="M2 4.5H11" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+                  <path d="M15 4.5H16" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+                  <circle cx="13" cy="4.5" r="2" stroke="#333" stroke-width="1.3"/>
+                  <path d="M1 11.5H4" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+                  <path d="M8 11.5H16" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+                  <circle cx="6" cy="11.5" r="2" stroke="#333" stroke-width="1.3"/>
+                </svg>
+              </a>
             </div>
-            <!-- 设置配置（滑块）图标：点击进入「具体日程」编辑界面 -->
-            <a class="card__action" href="plan-edit.html?mode=edit" aria-label="具体日程设置" data-nav-link>
-              <svg class="icon" width="17" height="16" viewBox="0 0 17 16" fill="none">
-                <path d="M2 4.5H11" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
-                <path d="M15 4.5H16" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
-                <circle cx="13" cy="4.5" r="2" stroke="#333" stroke-width="1.3"/>
-                <path d="M1 11.5H4" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
-                <path d="M8 11.5H16" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
-                <circle cx="6" cy="11.5" r="2" stroke="#333" stroke-width="1.3"/>
-              </svg>
-            </a>
           </div>
 
-          <div class="plan-empty" id="planEmpty">暂无计划</div>
+          <div class="plan-empty is-visible" id="planEmpty">正在加载计划…</div>
 
           <div class="view__spacer"></div>
 
-          <a class="pill-btn" href="plan-edit.html?mode=add" data-nav-link>新建计划</a>
+          <a class="pill-btn" href="plan-edit.html?mode=add" id="planAddLink" data-nav-link>新建计划</a>
         </section>
 
         <!-- 视图：角色 -->
@@ -157,6 +159,14 @@
           </div>
 
           <div class="setting-row">
+            <div class="setting-row__text">
+              <span class="setting-row__label">飞书日历</span>
+              <span class="setting-row__hint" id="feishuBoundAt"></span>
+            </div>
+            <button class="setting-btn" type="button" id="feishuBindBtn" disabled>加载中…</button>
+          </div>
+
+          <div class="setting-row">
             <span class="setting-row__label">配置新网络</span>
             <button class="setting-btn" type="button">配网</button>
           </div>
@@ -179,7 +189,25 @@
   <div class="confirm-dialog" id="unbindConfirmDialog">
     <div class="confirm-dialog__backdrop" data-action="cancel"></div>
     <div class="confirm-dialog__box">
-      <p class="confirm-dialog__text">确定要解绑此设备吗？</p>
+      <div class="confirm-dialog__content">
+        <p class="confirm-dialog__text">确定要解绑此设备吗？</p>
+        <p class="confirm-dialog__tip">提示：解绑设备后，需要重新配网才能再次使用。</p>
+      </div>
+      <div class="confirm-dialog__actions">
+        <button class="confirm-dialog__btn confirm-dialog__btn--cancel" type="button" data-action="cancel">取消</button>
+        <button class="confirm-dialog__btn confirm-dialog__btn--confirm" type="button" data-action="confirm">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 解绑飞书日历二次确认对话框 -->
+  <div class="confirm-dialog" id="feishuUnbindDialog">
+    <div class="confirm-dialog__backdrop" data-action="cancel"></div>
+    <div class="confirm-dialog__box">
+      <div class="confirm-dialog__content">
+        <p class="confirm-dialog__text">确定要解绑飞书日历吗？</p>
+        <p class="confirm-dialog__tip">解绑后将无法同步日程。</p>
+      </div>
       <div class="confirm-dialog__actions">
         <button class="confirm-dialog__btn confirm-dialog__btn--cancel" type="button" data-action="cancel">取消</button>
         <button class="confirm-dialog__btn confirm-dialog__btn--confirm" type="button" data-action="confirm">确定</button>
@@ -188,10 +216,13 @@
   </div>
 
   <script src="config.js"></script>
+  <script src="toast.js"></script>
   <script src="dropdown.js"></script>
   <script src="device-status.js"></script>
   <script src="device-name.js"></script>
   <script src="characters.js"></script>
+  <script src="schedules.js"></script>
+  <script src="feishu.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

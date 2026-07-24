@@ -132,6 +132,7 @@
   // onChange(fn)      订阅当前设备变化；注册时立即回调一次当前值
   // setCurrentName()  设备名改动后同步到本地状态并重渲染（不发请求）
   // setCurrentCharacter() 角色绑定成功后同步指定设备的角色（不发请求）
+  // unbindCurrent()   解绑当前设备并刷新设备列表
   window.PinVerseDevices = {
     getCurrent() {
       const device = currentDevice();
@@ -153,6 +154,20 @@
       device.character_id = characterId;
       device.bound_character_id = characterId;
       if (device === currentDevice()) emitChange();
+    },
+    async unbindCurrent() {
+      const device = currentDevice();
+      const headers = authHeaders();
+      if (!device || !headers) throw new Error('登录状态或设备无效');
+
+      const res = await fetch(
+        API_HOST + '/devices/' + encodeURIComponent(device.device_id),
+        { method: 'DELETE', headers },
+      );
+      if (!res.ok) throw new Error('设备解绑失败（' + res.status + '）');
+
+      localStorage.removeItem(CURRENT_DEVICE_KEY);
+      await loadDeviceStatus();
     },
   };
 

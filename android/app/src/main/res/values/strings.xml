@@ -4,4 +4,6 @@
     <string name="title_activity_main">PinVerse</string>
     <string name="package_name">com.pinverse.nb</string>
     <string name="custom_url_scheme">com.pinverse.nb</string>
+    <string name="feishu_auth_title">飞书授权</string>
+    <string name="feishu_auth_close">关闭</string>
 </resources>

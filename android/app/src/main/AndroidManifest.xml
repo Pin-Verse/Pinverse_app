@@ -24,6 +24,13 @@
 
         </activity>
 
+        <!-- 飞书 OAuth 授权 WebView（拦截 https://pin.verse/bind-success 后自行关闭） -->
+        <activity
+            android:name=".FeishuAuthActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation|density"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

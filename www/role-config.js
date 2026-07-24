@@ -85,25 +85,35 @@
     errorEl.classList.remove('is-visible');
   }
 
+  // 角色一旦创建成功就记下 ID：后续若只是头像上传失败，重试时不再重复创建角色。
+  let createdCharacterId = null;
+
   function setSubmitting(submitting) {
     submitBtn.disabled = submitting;
-    submitBtn.textContent = submitting ? '正在创建…' : '完成配置';
+    if (submitting) {
+      submitBtn.textContent = createdCharacterId ? '正在上传头像…' : '正在创建…';
+    } else {
+      submitBtn.textContent = createdCharacterId ? '重试上传头像' : '完成配置';
+    }
   }
 
-  function buildCharacterPayload() {
-    const catchphrase = catchphraseInput.value.trim();
+  function extractCharacterId(data) {
+    if (!data || typeof data !== 'object') return null;
+    return data.character_id ?? data.id ?? data.character?.character_id ?? null;
+  }
 
+  // 字段名与 POST /characters 文档保持一致：
+  // personality_sliders 只有“性格”“语气”两个 1~100 的整数，custom_phrases 是字符串。
+  // 面板的 X 轴（温柔 → 冷酷）作为“性格”，Y 轴（活泼外向 → 内向收敛）作为“语气”。
+  function buildCharacterPayload() {
     return {
       character_name: nameInput.value.trim(),
-      img_url: 'mock://character-avatar',
-      call_me: callMeInput.value.trim(),
+      address_for_user: callMeInput.value.trim(),
       personality_sliders: {
-        温柔度: 100 - personality.x,
-        话痨程度: 100 - personality.y,
-        毒舌程度: personality.x,
-        元气值: 100 - personality.y,
+        性格: personality.x,
+        语气: personality.y,
       },
-      custom_phrases: catchphrase ? [catchphrase] : [],
+      custom_phrases: catchphraseInput.value.trim(),
     };
   }
 
@@ -115,7 +125,9 @@
     return '';
   }
 
-  // ---------- 完成配置：创建角色成功后跳转到角色标签卡 ----------
+  // ---------- 完成配置 ----------
+  // 顺序：先创建角色拿到 character_id，再把第一步拍摄的吧唧上传到该角色名下，
+  // 上传接口会把图片 URL 绑定到角色，最后跳转到角色标签卡。
   submitBtn.addEventListener('click', async () => {
     clearError();
 
@@ -135,19 +147,33 @@
     setSubmitting(true);
 
     try {
-      const response = await fetch(API_HOST + '/characters', {
-        method: 'POST',
-        headers: {
-          Authorization: 'Bearer ' + token,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-      const data = await response.json().catch(() => null);
+      if (!createdCharacterId) {
+        const response = await fetch(API_HOST + '/characters', {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+        const data = await response.json().catch(() => null);
 
-      if (!response.ok || (data && data.error)) {
-        showError(extractErrorMessage(data) || '角色创建失败，请稍后重试');
-        return;
+        if (!response.ok || (data && data.error)) {
+          showError(extractErrorMessage(data) || '角色创建失败，请稍后重试');
+          return;
+        }
+
+        createdCharacterId = extractCharacterId(data);
+      }
+
+      const photo = localStorage.getItem('pinverse:newRolePhoto');
+      if (photo && createdCharacterId) {
+        try {
+          await window.PinVerseUploads.uploadAvatar(photo, createdCharacterId);
+        } catch (err) {
+          showError('角色已创建，但头像上传失败，请重试');
+          return;
+        }
       }
 
       localStorage.removeItem('pinverse:newRolePhoto');

@@ -24,10 +24,13 @@
     <div class="role-add__body">
       <div class="role-add__intro">
         <p class="role-add__title">第一步 拍摄吧唧</p>
-        <p class="role-add__subtitle">
+        <p class="role-add__subtitle" id="roleAddSubtitleCapture">
           手机水平桌面进行拍摄<br />
           请确保圆形取景框刚好包含吧唧所有内容<br />
           否则效果可能不佳
+        </p>
+        <p class="role-add__subtitle is-hidden" id="roleAddSubtitlePreview">
+          效果是这样的，可以吗？
         </p>
       </div>
 
@@ -45,9 +48,19 @@
         <div class="camera-frame__ring"></div>
       </div>
 
+      <!-- 拍摄结果预览：拍摄后延时显示，见 role-add.js -->
+      <div class="role-add__preview is-hidden" id="roleAddPreview">
+        <img class="role-add__preview-img" id="roleAddPreviewImg" alt="拍摄预览" />
+      </div>
+
       <div class="role-add__spacer"></div>
 
       <button class="pill-btn" type="button" id="roleAddCaptureBtn">拍摄</button>
+
+      <div class="role-add__preview-actions is-hidden" id="roleAddPreviewActions">
+        <button class="pill-btn" type="button" id="roleAddContinueBtn">继续</button>
+        <button class="pill-btn pill-btn--danger" type="button" id="roleAddRetakeBtn">重拍</button>
+      </div>
     </div>
   </div>
 

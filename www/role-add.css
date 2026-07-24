@@ -125,19 +125,42 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle at 50% 53%, transparent 0 49px, rgba(0, 0, 0, 0.45) 50px);
+  background: radial-gradient(circle at 50% 53%, transparent 0 64px, rgba(0, 0, 0, 0.45) 65px);
 }
 
 .camera-frame__ring {
   position: absolute;
   left: 50%;
   top: 53%;
-  width: 100px;
-  height: 100px;
+  width: 130px;
+  height: 130px;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   box-shadow: 0 0 0 3px #fff, 0 0 0 4px var(--ring);
   pointer-events: none;
+}
+
+/* ---------- 拍摄结果预览 ---------- */
+.role-add__preview {
+  width: 160px;
+  aspect-ratio: 160 / 159;
+  margin: 24px auto 0;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 4px var(--ring);
+}
+
+.role-add__preview-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.role-add__preview-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
 }
 
 .role-add__spacer {

@@ -490,3 +490,10 @@ body {
   text-decoration: none;
   box-sizing: border-box;
 }
+
+.pill-btn--danger {
+  background: #fbebeb;
+  border-color: #ffd8d5;
+  box-shadow: 0 0 0 3px #fff8f8, 0 0 0 4px #ffbdbd;
+  color: #c21a1d;
+}

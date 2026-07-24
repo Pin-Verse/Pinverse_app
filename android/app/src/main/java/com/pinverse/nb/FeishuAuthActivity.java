@@ -1,6 +1,7 @@
 package com.pinverse.nb;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,15 +10,21 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.net.URISyntaxException;
 
 /**
  * 飞书 OAuth 授权页容器。
  *
  * 用独立 WebView 加载后端下发的授权地址，并拦截所有以 https://pin.verse/bind-success 开头的跳转：
  * 该域名不可达，绝不能放行真实网络请求，拦截到即解析 ok / reason 并关闭本页。
+ *
+ * 授权页还会用 lark:// 等自定义 scheme 拉起飞书 App 确认，WebView 自身无法加载这类地址
+ * （net::ERR_UNKNOWN_URL_SCHEME），一并拦下交给系统处理。
  *
  * 结果通过 setResult 回传给 FeishuAuthPlugin：
  *   completed = 是否走到了 bind-success（用户中途返回则为 false）
@@ -82,7 +89,15 @@ public class FeishuAuthActivity extends AppCompatActivity {
 
     /** 返回 true 表示拦截，WebView 不会真正发起这次加载。 */
     private boolean handleUrl(String url) {
-        if (url == null || !url.startsWith(BIND_SUCCESS_PREFIX)) return false;
+        if (url == null) return false;
+
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            // lark:// 等自定义 scheme：交给系统拉起飞书 App，WebView 自己加载不了
+            openExternalApp(url);
+            return true;
+        }
+
+        if (!url.startsWith(BIND_SUCCESS_PREFIX)) return false;
 
         Uri uri = Uri.parse(url);
         Intent data = new Intent();
@@ -91,6 +106,25 @@ public class FeishuAuthActivity extends AppCompatActivity {
         data.putExtra(EXTRA_REASON, uri.getQueryParameter("reason"));
         finishWith(data);
         return true;
+    }
+
+    /** 用系统能力打开非 http(s) 地址（拉起飞书 App）；没装对应 App 时提示用户换网页方式登录。 */
+    private void openExternalApp(String url) {
+        Intent intent;
+        try {
+            intent = url.startsWith("intent:")
+                    ? Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+                    : new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        } catch (URISyntaxException e) {
+            return;
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.feishu_auth_app_missing, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void finishWithCancel() {

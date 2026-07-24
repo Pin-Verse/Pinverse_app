@@ -42,6 +42,18 @@
         </provider>
     </application>
 
+    <!-- Android 11+ 包可见性：授权页会用这些 scheme 拉起飞书 App -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="lark" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="feishu" />
+        </intent>
+    </queries>
+
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />

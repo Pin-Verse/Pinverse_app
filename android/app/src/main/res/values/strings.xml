@@ -6,4 +6,5 @@
     <string name="custom_url_scheme">com.pinverse.nb</string>
     <string name="feishu_auth_title">飞书授权</string>
     <string name="feishu_auth_close">关闭</string>
+    <string name="feishu_auth_app_missing">未检测到飞书 App，请在页面内改用其他方式登录</string>
 </resources>

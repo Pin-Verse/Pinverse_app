@@ -8,6 +8,7 @@
   max-width: 393px;
   min-height: 100vh;
   min-height: 100dvh;
+  padding-top: var(--screen-top-offset);
   background: var(--bg);
   display: flex;
   flex-direction: column;

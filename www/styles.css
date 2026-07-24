@@ -461,17 +461,18 @@ body {
 
 /* ---------- 角色网格（角色视图） ---------- */
 .role-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 20px;
+  /* 固定两列自适应：窄屏时列宽等比收缩，卡片不会被内容撑破或挤压 */
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 16px;
   padding: 4px 0;
 }
 
 .role-card {
-  width: 140px;
-  height: 140px;
-  padding: 10px 4px 8px;
+  width: auto;
+  min-width: 0;
+  min-height: 140px;
+  padding: 10px 6px 8px;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 8px;
@@ -492,8 +493,9 @@ body {
 }
 
 .role-card__avatar {
-  width: 83px;
-  height: 83px;
+  width: min(83px, 72%);
+  height: auto;
+  aspect-ratio: 1 / 1;
   object-fit: contain;
   display: block;
 }
@@ -503,14 +505,23 @@ body {
   font-size: 15px;
   font-weight: 600;
   color: var(--ink);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .role-card__meta {
   margin-top: 4px;
+  max-width: 100%;
   font-size: 10px;
   font-weight: 600;
+  line-height: 1.35;
   color: var(--ink-60);
-  white-space: nowrap;
+  /* 窄屏时允许折行，避免 nowrap 把卡片撑出面板 */
+  white-space: normal;
+  text-align: center;
+  word-break: break-word;
 }
 
 /* ---------- 设置视图 ---------- */

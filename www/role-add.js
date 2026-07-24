@@ -58,7 +58,7 @@
 
   captureBtn.addEventListener('click', () => {
     if (video.classList.contains('is-hidden') || captureBtn.disabled) return;
-    capturedPhoto = window.PinVerseCamera.capture(video, canvas);
+    capturedPhoto = window.PinVerseCamera.capture(video, canvas, cameraFrame);
     captureBtn.disabled = true;
     setTimeout(() => showPreview(capturedPhoto), 1000);
   });

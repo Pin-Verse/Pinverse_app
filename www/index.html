@@ -11,9 +11,58 @@
 </head>
 <body>
   <div class="screen">
-    <!-- 顶部插画 -->
+    <!-- 顶部插画：设备外观（拆解自 Figma「Group 9」，分层还原） -->
     <div class="hero">
-      <img src="assets/plan-illustration.png" alt="PinVerse 角色卡片插画" decoding="async" />
+      <div class="device">
+        <!-- 底部投影 -->
+        <img class="device__shadow" src="assets/hero/shadow.svg" alt="" aria-hidden="true" />
+
+        <!-- 背后第二张卡片（露出一圈边角 + 粉色光晕箭头，营造堆叠层次） -->
+        <img class="device__back" src="assets/hero/shell-back.svg" alt="" aria-hidden="true" />
+        <div class="device__glow">
+          <img class="device__glow-img" src="assets/hero/sticker.png" alt="" aria-hidden="true" />
+        </div>
+
+        <!-- 正面卡片底板 -->
+        <div class="device__base"></div>
+
+        <!-- 左侧谷子图片：徽章式谷子照片 -->
+        <img class="device__photo" src="assets/avatar-ryo.png" alt="谷子照片" decoding="async" />
+
+        <!-- 粉色外壳图层：卡片轮廓 + 粉色装饰条 + 贴纸 + 功能图标 -->
+        <img class="device__frame" src="assets/hero/shell-front.svg" alt="" aria-hidden="true" />
+        <div class="device__bar device__bar--top"></div>
+        <div class="device__bar device__bar--bottom"></div>
+        <span class="device__dot device__dot--1"></span>
+        <span class="device__dot device__dot--2"></span>
+        <span class="device__dot device__dot--3"></span>
+        <span class="device__dot device__dot--spark"></span>
+
+        <svg class="device__icon device__icon--share" viewBox="0 0 5.61012 5.61012" fill="none" aria-hidden="true">
+          <path d="M2.19637 1.0519H1.95288C1.26417 1.0519 0.919815 1.0519 0.705861 1.25729C0.491908 1.46269 0.491908 1.79327 0.491908 2.45443V3.38945C0.491908 4.0506 0.491908 4.38118 0.705861 4.58658C0.919815 4.79198 1.26417 4.79198 1.95288 4.79198H2.9362C3.62491 4.79198 3.96926 4.79198 4.18321 4.58658C4.32183 4.4535 4.37064 4.26788 4.38782 3.97384" stroke="#FFADF3" stroke-width="0.350633" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3.77902 1.63623V0.900726C3.77902 0.855083 3.81757 0.818082 3.86512 0.818082C3.88793 0.818082 3.90983 0.82679 3.92599 0.842287L5.03214 1.90421C5.08728 1.95713 5.11823 2.0289 5.11823 2.10374C5.11823 2.17857 5.08728 2.25034 5.03214 2.30326L3.92599 3.36517C3.90983 3.38069 3.88793 3.38939 3.86512 3.38939C3.81757 3.38939 3.77902 3.35239 3.77902 3.30673V2.57125H3.06584C2.07455 2.57125 1.70931 3.38939 1.70931 3.38939V2.805C1.70931 2.1595 2.25439 1.63623 2.92678 1.63623H3.77902Z" stroke="#FFADF3" stroke-width="0.350633" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        <div class="device__sticker">
+          <img class="device__sticker-img" src="assets/hero/sticker.png" alt="" aria-hidden="true" />
+        </div>
+
+        <svg class="device__icon device__icon--heart" viewBox="0 0 9.3502 9.3502" aria-hidden="true">
+          <path d="M4.21166 7.35063C3.11252 6.52867 0.934923 4.64963 0.934923 2.95866C0.934923 1.84099 1.75511 0.934945 2.88288 0.934945C3.46727 0.934945 4.05166 1.12974 4.83084 1.90892C5.61003 1.12974 6.19441 0.934945 6.7788 0.934945C7.90655 0.934945 8.72676 1.84099 8.72676 2.95866C8.72676 4.64963 6.54918 6.52867 5.45002 7.35063C5.08014 7.62721 4.58154 7.62721 4.21166 7.35063Z" fill="#FF0000" stroke="#FF0000" stroke-width="0.589063" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="device__icon device__icon--comment" viewBox="0 0 9.3502 9.3502" fill="none" aria-hidden="true">
+          <path d="M0.779132 4.09071C0.779132 2.14275 2.3375 1.16877 4.67505 1.16877C7.0126 1.16877 8.57097 2.14275 8.57097 4.09071C8.57097 6.03867 7.0126 7.01265 4.67505 7.01265V8.18142C4.67505 8.18142 0.779132 7.01265 0.779132 4.09071Z" stroke="#141B34" stroke-width="0.584388" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3.11666 3.31153H6.2334M3.11666 4.8699H4.67503" stroke="#141B34" stroke-width="0.584388" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="device__icon device__icon--bookmark" viewBox="0 0 9.3502 9.3502" fill="none" aria-hidden="true">
+          <path d="M1.55845 7.0051V3.7819C1.55845 2.36637 1.55845 1.6586 2.01489 1.21885C2.47133 0.779106 3.20594 0.779106 4.67519 0.779106C6.14442 0.779106 6.87907 0.779106 7.33548 1.21885C7.79192 1.6586 7.79192 2.36637 7.79192 3.7819V7.0051C7.79192 7.90346 7.79192 8.35262 7.49085 8.5134C6.90774 8.82472 5.81404 7.78599 5.29464 7.47323C4.99341 7.29184 4.84279 7.20114 4.67519 7.20114C4.50759 7.20114 4.35697 7.29184 4.05574 7.47323C3.53633 7.78599 2.44262 8.82472 1.85955 8.5134C1.55845 8.35262 1.55845 7.90346 1.55845 7.0051Z" stroke="#141B34" stroke-width="0.584388" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+        <!-- 文本图层 -->
+        <div class="device__text">
+          <p>一些文本</p>
+        </div>
+      </div>
     </div>
 
     <!-- 标题行 -->
@@ -134,13 +183,26 @@
 
           <div class="view__spacer"></div>
 
-          <button class="pill-btn" type="button">解绑设备</button>
+          <button class="pill-btn pill-btn--danger" type="button" id="unbindDeviceBtn">解绑设备</button>
         </section>
       </div>
     </div>
 
   </div>
 
+  <!-- 解绑设备二次确认对话框 -->
+  <div class="confirm-dialog" id="unbindConfirmDialog">
+    <div class="confirm-dialog__backdrop" data-action="cancel"></div>
+    <div class="confirm-dialog__box">
+      <p class="confirm-dialog__text">确定要解绑此设备吗？</p>
+      <div class="confirm-dialog__actions">
+        <button class="confirm-dialog__btn confirm-dialog__btn--cancel" type="button" data-action="cancel">取消</button>
+        <button class="confirm-dialog__btn confirm-dialog__btn--confirm" type="button" data-action="confirm">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
   <script src="dropdown.js"></script>
   <script src="app.js"></script>
 </body>

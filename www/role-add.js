@@ -31,6 +31,15 @@
     }, 180);
   }
 
+  // ---------- 前往下一步（带退出动效，并释放摄像头） ----------
+  function goNext(url) {
+    window.PinVerseCamera.stop();
+    screen.classList.add('is-leaving');
+    setTimeout(() => {
+      location.href = url;
+    }, 180);
+  }
+
   backBtn.addEventListener('click', goBack);
 
   // ---------- 打开摄像头，就绪后用实时画面替换占位提示 ----------
@@ -45,11 +54,13 @@
   }
 
   // ---------- 拍摄：取景框未就绪时不响应，拍摄后延时 1 秒展示预览 ----------
+  let capturedPhoto = null;
+
   captureBtn.addEventListener('click', () => {
     if (video.classList.contains('is-hidden') || captureBtn.disabled) return;
-    const photo = window.PinVerseCamera.capture(video, canvas);
+    capturedPhoto = window.PinVerseCamera.capture(video, canvas);
     captureBtn.disabled = true;
-    setTimeout(() => showPreview(photo), 1000);
+    setTimeout(() => showPreview(capturedPhoto), 1000);
   });
 
   function showPreview(photo) {
@@ -74,7 +85,12 @@
   }
 
   retakeBtn.addEventListener('click', showCamera);
-  continueBtn.addEventListener('click', goBack);
+
+  // ---------- 继续：把刚拍摄的吧唧存入本地，交给第二步读取 ----------
+  continueBtn.addEventListener('click', () => {
+    if (capturedPhoto) localStorage.setItem('pinverse:newRolePhoto', capturedPhoto);
+    goNext('role-config.html');
+  });
 
   window.addEventListener('pageshow', (e) => {
     if (e.persisted) {

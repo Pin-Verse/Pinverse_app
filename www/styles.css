@@ -89,10 +89,199 @@ body {
   flex-shrink: 0;
 }
 
-.hero img {
+.hero > img {
   display: block;
   width: 100%;
   height: auto;
+}
+
+/* ---------- 顶部插画：设备外观（分层还原自 Figma「Group 9」） ---------- */
+/* 设计基准：344 × 193.569（Figma 内 Group 9 的原始尺寸） */
+.device {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 344 / 193.569;
+  container-type: inline-size;
+}
+
+.device img {
+  display: block;
+}
+
+/* 底部投影 */
+.device__shadow {
+  position: absolute;
+  left: 0;
+  top: 53.14%;
+  width: 100%;
+  height: 46.85%;
+  object-fit: contain;
+}
+
+/* 背后第二张卡片：只露出边角，营造堆叠层次 */
+.device__back {
+  position: absolute;
+  left: 7.395%;
+  top: 2.286%;
+  width: 84.887%;
+  height: 74.29%;
+}
+
+.device__glow {
+  position: absolute;
+  left: 3.537%;
+  top: 0;
+  width: 88.746%;
+  height: 76.573%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.device__glow-img {
+  position: absolute;
+  left: -3.99%;
+  top: -23.29%;
+  width: 109.78%;
+  height: 161.51%;
+}
+
+/* 正面卡片底板 */
+.device__base {
+  position: absolute;
+  left: 12.464%;
+  top: 8.57%;
+  width: 73.388%;
+  height: 69.077%;
+  background: #fff;
+  border-radius: 3cqw;
+}
+
+/* 左侧谷子图片：徽章式谷子照片 */
+.device__photo {
+  position: absolute;
+  left: 16.813%;
+  top: 18.231%;
+  width: 27.155%;
+  height: 47.822%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* 粉色外壳图层：卡片轮廓线 + 粉色装饰条 + 贴纸 + 功能图标 */
+.device__frame {
+  position: absolute;
+  left: 13.552%;
+  top: 10.505%;
+  width: 71.756%;
+  height: 62.798%;
+  pointer-events: none;
+}
+
+.device__bar {
+  position: absolute;
+  left: 13.552%;
+  background: #ffb5ed;
+  border-radius: 999px;
+}
+
+.device__bar--top {
+  top: 14.851%;
+  width: 32.877%;
+  height: 1.932%;
+}
+
+.device__bar--bottom {
+  width: 71.755%;
+  top: 69.437%;
+  height: 3.864%;
+}
+
+.device__dot {
+  position: absolute;
+  width: 0.544%;
+  height: 0.966%;
+  top: 18.231%;
+  background: #ffb5ed;
+  border-radius: 50%;
+}
+
+.device__dot--1 { left: 41.808%; }
+.device__dot--2 { left: 43.178%; }
+.device__dot--3 { left: 44.265%; }
+
+.device__dot--spark {
+  left: 14.91%;
+  top: 17.75%;
+  width: 2.174%;
+  height: 3.864%;
+}
+
+.device__sticker {
+  position: absolute;
+  left: 10.29%;
+  top: 8.57%;
+  width: 75.019%;
+  height: 64.72%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.device__sticker-img {
+  position: absolute;
+  left: -3.99%;
+  top: -23.29%;
+  width: 109.78%;
+  height: 161.51%;
+}
+
+.device__icon {
+  position: absolute;
+  width: 2.718%;
+  height: 4.831%;
+}
+
+.device__icon--share {
+  width: 1.929%;
+  height: 3.429%;
+  left: 43.45%;
+  top: 11.47%;
+}
+
+.device__icon--heart {
+  left: 17.084%;
+  top: 61.437%;
+}
+
+.device__icon--comment {
+  left: 20.392%;
+  top: 61.216%;
+}
+
+.device__icon--bookmark {
+  left: 42.363%;
+  top: 61.437%;
+}
+
+/* 文本图层 */
+.device__text {
+  position: absolute;
+  left: 48.615%;
+  top: 39.483%;
+  width: 32.448%;
+  height: 25.93%;
+  background: #e3e8ee;
+  border-radius: 2.5cqw;
+  display: flex;
+  align-items: flex-start;
+  padding: 3cqw;
+}
+
+.device__text p {
+  margin: 0;
+  font-size: 1.7cqw;
+  line-height: 1.4;
+  color: #000;
+  word-break: break-word;
 }
 
 /* ---------- 头部标题行 ---------- */
@@ -496,4 +685,72 @@ body {
   border-color: #ffd8d5;
   box-shadow: 0 0 0 3px #fff8f8, 0 0 0 4px #ffbdbd;
   color: #c21a1d;
+}
+
+/* ---------- 二次确认对话框（删除计划 / 解绑设备等） ---------- */
+.confirm-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.confirm-dialog.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.confirm-dialog__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.confirm-dialog__box {
+  position: relative;
+  width: 270px;
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.confirm-dialog__text {
+  padding: 22px 16px;
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.confirm-dialog__actions {
+  display: flex;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.confirm-dialog__btn {
+  flex: 1 1 0;
+  height: 44px;
+  border: none;
+  background: transparent;
+  font-family: var(--font);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.confirm-dialog__btn--cancel {
+  font-weight: 700;
+  color: #ff2b2b;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.confirm-dialog__btn--confirm {
+  font-weight: 600;
+  color: var(--ink-60);
 }

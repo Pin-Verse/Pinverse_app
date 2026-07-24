@@ -1,0 +1,196 @@
+/* ===== PinVerse · 添加角色 · 第二步 配置角色 =====
+   还原自 Figma「PinVerse」(node 216:509)
+   独立页面：由 role-add.html 拍摄完成后进入 */
+
+.role-config-screen {
+  width: 100%;
+  max-width: 393px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-top: var(--screen-top-offset);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  animation: role-config-enter 0.28s ease;
+}
+
+.role-config-screen.is-leaving {
+  animation: role-config-leave 0.2s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes role-config-enter {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes role-config-leave {
+  to {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+}
+
+/* ---------- 头部：返回 ---------- */
+.role-config__header {
+  display: flex;
+  padding: 28px 20px 0;
+  flex-shrink: 0;
+}
+
+.role-config__icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* ---------- 内容区 ---------- */
+.role-config__body {
+  flex: 1 1 auto;
+  padding: 0 20px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.role-config__intro {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.role-config__title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.role-config__subtitle {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-60);
+}
+
+/* ---------- 角色头像（沿用第一步拍摄结果） ---------- */
+.role-config__avatar {
+  width: 120px;
+  aspect-ratio: 120 / 119;
+  margin: 24px auto 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--card-bg);
+  box-shadow: 0 0 0 3px #fff, 0 0 0 4px var(--ring);
+  flex-shrink: 0;
+}
+
+.role-config__avatar-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- 信息卡片 ---------- */
+.role-config__card {
+  margin-top: 24px;
+  padding: 20px 19px;
+  background: var(--panel);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.role-config__personality {
+  margin-top: 12px;
+}
+
+.role-config__personality-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.role-config__card .pill-btn {
+  margin-top: 20px;
+}
+
+/* ---------- 性格二维面板 ---------- */
+.personality-panel {
+  display: grid;
+  grid-template-columns: auto 215px auto;
+  grid-template-rows: auto 215px auto;
+  justify-content: center;
+  align-items: center;
+  row-gap: 6px;
+  column-gap: 10px;
+}
+
+.personality-panel__axis {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-60);
+  white-space: nowrap;
+}
+
+.personality-panel__axis--top {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+}
+
+.personality-panel__axis--bottom {
+  grid-column: 2;
+  grid-row: 3;
+  justify-self: center;
+}
+
+.personality-panel__axis--left {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.personality-panel__axis--right {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.personality-panel__grid {
+  grid-column: 2;
+  grid-row: 2;
+  position: relative;
+  width: 215px;
+  height: 215px;
+  border-radius: 8px;
+  background-color: #eef0f4;
+  background-image: radial-gradient(circle, rgba(99, 102, 241, 0.35) 1.2px, transparent 1.2px);
+  background-size: 21.5px 21.5px;
+  background-position: 10px 10px;
+  border: 1px solid #e6e9ee;
+  touch-action: none;
+  cursor: pointer;
+}
+
+.personality-panel__handle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  pointer-events: none;
+}

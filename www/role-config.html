@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no"
+  />
+  <title>PinVerse · 配置角色</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="role-config.css" />
+</head>
+<body>
+  <div class="role-config-screen">
+    <div class="role-config__header">
+      <button class="role-config__icon-btn" type="button" id="roleConfigBackBtn" aria-label="返回">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M10.5 6L5 12L10.5 18" stroke="#1A1A1A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5.5 12H19" stroke="#1A1A1A" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="role-config__body">
+      <div class="role-config__intro">
+        <p class="role-config__title">第二步 配置角色</p>
+        <p class="role-config__subtitle">为你的角色配置一个合适的性格吧！</p>
+      </div>
+
+      <div class="role-config__avatar">
+        <img class="role-config__avatar-img" id="roleConfigAvatar" alt="角色头像" />
+      </div>
+
+      <div class="role-config__card">
+        <div class="setting-row">
+          <span class="setting-row__label">角色名称</span>
+          <input class="setting-input" type="text" id="roleConfigName" placeholder="请输入" />
+        </div>
+        <div class="setting-row">
+          <span class="setting-row__label">怎么称呼你</span>
+          <input class="setting-input" type="text" id="roleConfigCallMe" placeholder="请输入" />
+        </div>
+        <div class="setting-row">
+          <span class="setting-row__label">口头禅（可选）</span>
+          <input class="setting-input" type="text" id="roleConfigCatchphrase" placeholder="请输入" />
+        </div>
+
+        <div class="role-config__personality">
+          <p class="role-config__personality-title">性格</p>
+
+          <!-- 二维性格面板：拖动白色圆点，X/Y 位置映射为 1~100，见 role-config.js -->
+          <div class="personality-panel">
+            <span class="personality-panel__axis personality-panel__axis--top">活泼外向</span>
+            <span class="personality-panel__axis personality-panel__axis--bottom">内向收敛</span>
+            <span class="personality-panel__axis personality-panel__axis--left">温柔</span>
+            <span class="personality-panel__axis personality-panel__axis--right">冷酷</span>
+            <div class="personality-panel__grid" id="personalityGrid">
+              <div class="personality-panel__handle" id="personalityHandle"></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="pill-btn" type="button" id="roleConfigSubmitBtn">完成配置</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="role-config.js"></script>
+</body>
+</html>

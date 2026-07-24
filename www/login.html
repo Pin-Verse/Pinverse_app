@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no"
+  />
+  <title>PinVerse · 登录</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <div class="login-screen">
+    <div class="login__hero">
+      <img src="assets/plan-illustration.png" alt="PinVerse 角色卡片插画" decoding="async" />
+    </div>
+
+    <div class="login__body">
+      <p class="login__title">PinVerse</p>
+      <p class="login__subtitle">登录你的账号</p>
+
+      <div class="login__card">
+        <div class="login__field">
+          <span class="login__field-label">账号</span>
+          <input class="login__input" type="text" id="loginUsername" placeholder="请输入账号" autocomplete="username" value="admin" />
+        </div>
+        <div class="login__field">
+          <span class="login__field-label">密码</span>
+          <input class="login__input" type="password" id="loginPassword" placeholder="请输入密码" autocomplete="current-password" value="adminadmin" />
+        </div>
+
+        <p class="login__error" id="loginError"></p>
+
+        <button class="pill-btn" type="button" id="loginSubmitBtn">登录</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>

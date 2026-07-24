@@ -23,6 +23,11 @@
     tab.addEventListener('click', () => switchTo(tab.dataset.tab));
   });
 
+  // ---------- 从其他页面跳转回来时，按 ?tab= 指定要展示的标签页 ----------
+  // 例如 role-config.html 完成配置后跳转到 index.html?tab=role，直接展示「角色」标签页。
+  const initialTab = new URLSearchParams(location.search).get('tab');
+  if (initialTab) switchTo(initialTab);
+
   // ---------- 角色卡片（单选：选中变蓝） ----------
   const roleCards = document.querySelectorAll('.role-card');
   roleCards.forEach((card) => {
@@ -55,6 +60,23 @@
       }, 180);
     });
   });
+
+  // ---------- 解绑设备：二次确认对话框 ----------
+  const unbindBtn = document.getElementById('unbindDeviceBtn');
+  const unbindDialog = document.getElementById('unbindConfirmDialog');
+
+  if (unbindBtn && unbindDialog) {
+    unbindBtn.addEventListener('click', () => unbindDialog.classList.add('is-open'));
+
+    unbindDialog.querySelectorAll('[data-action="cancel"]').forEach((el) => {
+      el.addEventListener('click', () => unbindDialog.classList.remove('is-open'));
+    });
+
+    unbindDialog.querySelector('[data-action="confirm"]').addEventListener('click', () => {
+      // TODO: 接入真实解绑逻辑后在此处理设备解绑
+      unbindDialog.classList.remove('is-open');
+    });
+  }
 
   // ---------- 从 plan-edit.html 用 history.back() 返回时，若命中 bfcache，
   // 页面会带着离开前加的 is-leaving（淡出）状态被直接恢复，这里去掉它 ----------

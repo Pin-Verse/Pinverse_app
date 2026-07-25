@@ -206,14 +206,14 @@ body {
 }
 
 /* 贴纸光晕：放大 + 模糊的底层副本，营造发光轮廓 */
+/* 容器即贴纸图片的完整外框（由 Figma 裁剪框换算而来），不再裁剪左右装饰 */
 .device__glow,
 .device__sticker {
   position: absolute;
-  left: 3.537%;
-  top: 0%;
-  width: 88.746%;
-  height: 76.573%;
-  overflow: hidden;
+  left: 0%;
+  top: -17.834%;
+  width: 97.423%;
+  height: 123.674%;
   pointer-events: none;
 }
 
@@ -224,11 +224,8 @@ body {
 }
 
 .device__sticker-img {
-  position: absolute;
-  left: -3.99%;
-  top: -23.29%;
-  width: 109.78%;
-  height: 161.51%;
+  width: 100%;
+  height: 100%;
 }
 
 .device__icon {

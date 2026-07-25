@@ -637,15 +637,11 @@ body {
   align-items: center;
   justify-content: space-between;
   min-height: 30px;
-  margin: 4px 0;
+  margin: 12px 0;
 }
 
-.view[data-view="settings"] {
-  gap: 12px;
-}
-
-.view[data-view="settings"] .setting-row {
-  margin: 0;
+.setting-row:first-child {
+  margin-top: 0;
 }
 
 .setting-row__label {

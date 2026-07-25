@@ -1,0 +1,28 @@
+/* ===== PinVerse · 角色管理 =====
+   复用“第二步 配置角色”的布局，只补充管理态样式。 */
+
+#roleManageScreen .role-config__body {
+  overflow-y: auto;
+}
+
+#roleManageScreen .role-config__card .pill-btn--danger {
+  margin-top: 14px;
+}
+
+#roleManageScreen .setting-input:disabled {
+  opacity: 0.55;
+}
+
+#roleManageScreen .role-config__error.is-success {
+  color: #347a51;
+}
+
+.personality-panel__grid.is-disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.role-delete-confirm {
+  color: #ff2b2b;
+  font-weight: 700;
+}

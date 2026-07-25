@@ -1,6 +1,6 @@
 // PinVerse · 添加角色 · 第二步 配置角色
 // 性格由一个二维面板决定：用户拖动白色圆点，程序读取圆点的 X / Y 坐标，
-// 分别映射为 1~100 的数值（X：1=温柔 → 100=冷酷；Y：1=活泼外向 → 100=内向收敛）。
+// 再按接口语义换算为 0~100（性格：0=毒舌 → 100=温柔；语气：0=冷淡寡言 → 100=元气话痨）。
 
 (function () {
   const API_HOST = window.PINVERSE_API_HOST;
@@ -41,8 +41,8 @@
     y = Math.max(0, Math.min(height, y));
     handle.style.left = x + 'px';
     handle.style.top = y + 'px';
-    personality.x = Math.round((x / width) * 99) + 1;
-    personality.y = Math.round((y / height) * 99) + 1;
+    personality.x = Math.round((x / width) * 100);
+    personality.y = Math.round((y / height) * 100);
   }
 
   function setHandleFromEvent(e) {
@@ -102,16 +102,15 @@
     return data.character_id ?? data.id ?? data.character?.character_id ?? null;
   }
 
-  // 字段名与 POST /characters 文档保持一致：
-  // personality_sliders 只有“性格”“语气”两个 1~100 的整数，custom_phrases 是字符串。
-  // 面板的 X 轴（温柔 → 冷酷）作为“性格”，Y 轴（活泼外向 → 内向收敛）作为“语气”。
+  // 字段名与 POST /characters 文档保持一致。界面坐标方向和接口数值方向相反，
+  // 因此 X/Y 都需要取反：左/上是 100，右/下是 0。
   function buildCharacterPayload() {
     return {
       character_name: nameInput.value.trim(),
       address_for_user: callMeInput.value.trim(),
       personality_sliders: {
-        性格: personality.x,
-        语气: personality.y,
+        性格: 100 - personality.x,
+        语气: 100 - personality.y,
       },
       custom_phrases: catchphraseInput.value.trim(),
     };

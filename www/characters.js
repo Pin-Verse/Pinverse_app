@@ -7,6 +7,7 @@
   const listEl = document.getElementById('characterList');
   const statusEl = document.getElementById('characterListStatus');
   let binding = false;
+  let suppressNextClick = false;
 
   if (!listEl || !statusEl) return;
 
@@ -79,6 +80,9 @@
     const name = character.name ?? character.character_name ?? '未命名角色';
     const id = characterId(character);
     card.className = 'role-card';
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', name + '，点击绑定，长按管理');
     if (id !== null) card.dataset.characterId = id;
 
     const avatar = document.createElement('img');
@@ -99,6 +103,63 @@
     cropImageToSquare(resolveImageUrl(character.img_url), avatar);
     return card;
   }
+
+  // 长按角色卡片进入管理页。手指有明显移动时视为滚动，不触发长按；
+  // 长按完成后屏蔽随后的 click，避免同时执行角色绑定。
+  const LONG_PRESS_MS = 600;
+  const MOVE_TOLERANCE = 10;
+  let pressTimer = null;
+  let pressedCard = null;
+  let pressStartX = 0;
+  let pressStartY = 0;
+
+  function clearLongPress() {
+    if (pressTimer) clearTimeout(pressTimer);
+    pressTimer = null;
+    pressedCard?.classList.remove('is-pressing');
+    pressedCard = null;
+  }
+
+  function openCharacterManager(card) {
+    const id = card?.dataset.characterId;
+    if (!id) return;
+    suppressNextClick = true;
+    clearLongPress();
+    document.querySelector('.screen')?.classList.add('is-leaving');
+    setTimeout(() => {
+      location.href = 'role-manage.html?characterId=' + encodeURIComponent(id);
+    }, 180);
+  }
+
+  listEl.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    const card = event.target.closest('.role-card');
+    if (!card || !listEl.contains(card) || !card.dataset.characterId) return;
+    clearLongPress();
+    pressedCard = card;
+    pressStartX = event.clientX;
+    pressStartY = event.clientY;
+    card.classList.add('is-pressing');
+    pressTimer = setTimeout(() => openCharacterManager(card), LONG_PRESS_MS);
+  });
+
+  listEl.addEventListener('pointermove', (event) => {
+    if (!pressedCard) return;
+    if (
+      Math.abs(event.clientX - pressStartX) > MOVE_TOLERANCE ||
+      Math.abs(event.clientY - pressStartY) > MOVE_TOLERANCE
+    ) {
+      clearLongPress();
+    }
+  });
+
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach((eventName) => {
+    listEl.addEventListener(eventName, clearLongPress);
+  });
+
+  listEl.addEventListener('contextmenu', (event) => {
+    if (event.target.closest('.role-card')) event.preventDefault();
+  });
 
   // Canvas 生成真正的方形图片；若图片服务未开放 CORS，CSS 的 object-fit: cover 负责兜底。
   function cropImageToSquare(url, target) {
@@ -182,6 +243,11 @@
   }
 
   listEl.addEventListener('click', async (event) => {
+    if (suppressNextClick) {
+      suppressNextClick = false;
+      event.preventDefault();
+      return;
+    }
     const card = event.target.closest('.role-card');
     if (!card || !listEl.contains(card) || binding || card.classList.contains('is-selected')) return;
 

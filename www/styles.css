@@ -547,6 +547,14 @@ body {
   justify-content: flex-start;
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.role-card.is-pressing {
+  transform: scale(0.97);
+  filter: brightness(0.97);
 }
 
 /* 选中态：卡片变蓝 */

@@ -9,7 +9,6 @@
 
 (function () {
   const API_HOST = window.PINVERSE_API_HOST;
-  const TOKEN_KEY = 'pinverse:token';
   const CURRENT_DEVICE_KEY = 'pinverse:currentDeviceId';
   const POLL_INTERVAL_MS = 5000;
 
@@ -35,8 +34,7 @@
   }
 
   function authHeaders() {
-    const token = localStorage.getItem(TOKEN_KEY);
-    return token ? { Authorization: 'Bearer ' + token } : null;
+    return window.PinVerseAuth.authHeaders();
   }
 
   async function fetchDeviceList() {
@@ -44,6 +42,11 @@
     if (!headers) return [];
 
     const res = await fetch(API_HOST + '/users/me/devices', { method: 'GET', headers });
+    // 轮询期间凭证过期（或被吊销）时清掉凭证回登录页，避免页面一直空转
+    if (res.status === 401 || res.status === 403) {
+      window.PinVerseAuth.logout();
+      return [];
+    }
     if (!res.ok) return [];
     const data = await res.json().catch(() => null);
     return Array.isArray(data) ? data : [];
@@ -171,6 +174,9 @@
     },
   };
 
-  loadDeviceStatus();
-  setInterval(loadDeviceStatus, POLL_INTERVAL_MS);
+  // 凭证是从原生安全存储里异步读出来的，等它就绪后再开始轮询
+  window.PinVerseAuth.onReady(() => {
+    loadDeviceStatus();
+    setInterval(loadDeviceStatus, POLL_INTERVAL_MS);
+  });
 })();

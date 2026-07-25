@@ -4,8 +4,6 @@
 // 调用方只依赖 uploadAvatar 一个接口，不关心编码与端点细节。
 
 window.PinVerseUploads = (function () {
-  const TOKEN_KEY = 'pinverse:token';
-
   // data URL（拍照结果）→ File，避免 base64 字符串直接进网络请求。
   // 必须是 File 而非 Blob：APK 内 CapacitorHttp 会劫持 fetch 并转换 body，
   // 其转换逻辑只对 File 做 base64 编码，Blob 会被当成 JSON 序列化成 {}，
@@ -23,17 +21,15 @@ window.PinVerseUploads = (function () {
 
   // 上传角色头像并绑定到角色，成功返回图片 URL，失败抛出异常。
   async function uploadAvatar(dataUrl, characterId) {
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) throw new Error('unauthorized');
+    const headers = window.PinVerseAuth.authHeaders();
+    if (!headers) throw new Error('unauthorized');
 
     const file = dataUrlToFile(dataUrl);
+    headers['Content-Type'] = file.type || 'application/octet-stream';
     const query = characterId ? '?character_id=' + encodeURIComponent(characterId) : '';
     const response = await fetch(window.PINVERSE_API_HOST + '/upload/avatar' + query, {
       method: 'POST',
-      headers: {
-        Authorization: 'Bearer ' + token,
-        'Content-Type': file.type || 'application/octet-stream',
-      },
+      headers,
       body: file,
     });
 

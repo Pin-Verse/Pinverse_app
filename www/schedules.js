@@ -3,15 +3,9 @@
 
 (function () {
   const API_HOST = window.PINVERSE_API_HOST;
-  const TOKEN_KEY = 'pinverse:token';
 
   function authHeaders(withBody) {
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) return null;
-    return {
-      Authorization: 'Bearer ' + token,
-      ...(withBody ? { 'Content-Type': 'application/json' } : {}),
-    };
+    return window.PinVerseAuth.authHeaders(withBody);
   }
 
   function collectionUrl(deviceId) {

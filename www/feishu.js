@@ -10,7 +10,6 @@
 
 (function () {
   const API_HOST = window.PINVERSE_API_HOST;
-  const TOKEN_KEY = 'pinverse:token';
 
   const btn = document.getElementById('feishuBindBtn');
   const hintEl = document.getElementById('feishuBoundAt');
@@ -27,8 +26,7 @@
   };
 
   function authHeaders() {
-    const token = localStorage.getItem(TOKEN_KEY);
-    return token ? { Authorization: 'Bearer ' + token } : null;
+    return window.PinVerseAuth.authHeaders();
   }
 
   async function request(path, method) {
@@ -206,5 +204,5 @@
   });
 
   render();
-  refreshStatus();
+  window.PinVerseAuth.onReady(refreshStatus);
 })();

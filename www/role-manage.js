@@ -3,7 +3,6 @@
 
 (function () {
   const API_HOST = window.PINVERSE_API_HOST;
-  const TOKEN_KEY = 'pinverse:token';
   const characterId = new URLSearchParams(location.search).get('characterId');
   const screen = document.getElementById('roleManageScreen');
   const backBtn = document.getElementById('roleManageBackBtn');
@@ -55,11 +54,7 @@
   }
 
   function authHeaders(withJson) {
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) return null;
-    const headers = { Authorization: 'Bearer ' + token };
-    if (withJson) headers['Content-Type'] = 'application/json';
-    return headers;
+    return window.PinVerseAuth.authHeaders(withJson);
   }
 
   function resolveImageUrl(url) {
@@ -247,5 +242,5 @@
   });
 
   setHandleFromValues(50, 50);
-  loadCharacter();
+  window.PinVerseAuth.onReady(loadCharacter);
 })();

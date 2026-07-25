@@ -13,7 +13,6 @@
 
 (function () {
   const API_HOST = window.PINVERSE_API_HOST;
-  const TOKEN_KEY = 'pinverse:token';
   const DEFAULT_INTERVAL_MS = 10000; // 响应没给 refresh_after_seconds 时的兜底节奏
   const MIN_INTERVAL_MS = 5000; // 后端给了过小或异常的值也不至于把接口打爆
   const MAX_CHARS = 20;
@@ -29,8 +28,7 @@
   let timerId = null;
 
   function authHeaders() {
-    const token = localStorage.getItem(TOKEN_KEY);
-    return token ? { Authorization: 'Bearer ' + token } : null;
+    return window.PinVerseAuth.authHeaders();
   }
 
   // 按「字」截断：用 Array.from 而非 slice，避免把 emoji 等代理对字符切坏

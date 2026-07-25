@@ -3,7 +3,6 @@
 
 (function () {
   const API_HOST = window.PINVERSE_API_HOST;
-  const TOKEN_KEY = 'pinverse:token';
   const listEl = document.getElementById('characterList');
   const statusEl = document.getElementById('characterListStatus');
   const devicePhotoEl = document.querySelector('.device__photo');
@@ -216,8 +215,7 @@
   }
 
   async function loadCharacters() {
-    const token = localStorage.getItem(TOKEN_KEY);
-    const headers = token ? { Authorization: 'Bearer ' + token } : {};
+    const headers = window.PinVerseAuth.authHeaders() || {};
 
     try {
       const response = await fetch(API_HOST + '/characters', { method: 'GET', headers });
@@ -238,18 +236,15 @@
   }
 
   async function bindCharacter(deviceId, characterId) {
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) return false;
+    const headers = window.PinVerseAuth.authHeaders(true);
+    if (!headers) return false;
 
     try {
       const response = await fetch(
         API_HOST + '/devices/' + encodeURIComponent(deviceId) + '/bind',
         {
           method: 'POST',
-          headers: {
-            Authorization: 'Bearer ' + token,
-            'Content-Type': 'application/json',
-          },
+          headers,
           body: JSON.stringify({ character_id: characterId }),
         }
       );
@@ -297,5 +292,5 @@
     syncSelectedCharacter(device);
   });
 
-  loadCharacters();
+  window.PinVerseAuth.onReady(loadCharacters);
 })();

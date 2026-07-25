@@ -4,7 +4,6 @@
 
 (function () {
   const API_HOST = window.PINVERSE_API_HOST;
-  const TOKEN_KEY = 'pinverse:token';
   const screen = document.querySelector('.role-config-screen');
   const backBtn = document.getElementById('roleConfigBackBtn');
   const avatar = document.getElementById('roleConfigAvatar');
@@ -137,8 +136,8 @@
       return;
     }
 
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) {
+    const headers = window.PinVerseAuth.authHeaders(true);
+    if (!headers) {
       showError('登录状态已失效，请重新登录');
       return;
     }
@@ -149,10 +148,7 @@
       if (!createdCharacterId) {
         const response = await fetch(API_HOST + '/characters', {
           method: 'POST',
-          headers: {
-            Authorization: 'Bearer ' + token,
-            'Content-Type': 'application/json',
-          },
+          headers,
           body: JSON.stringify(payload),
         });
         const data = await response.json().catch(() => null);

@@ -159,7 +159,8 @@
   submitBtn.textContent = isEdit ? '保存' : '新增';
 
   if (isEdit) {
-    loadSchedule();
+    // 凭证从原生安全存储异步读出，就绪后再拉计划详情
+    window.PinVerseAuth.onReady(loadSchedule);
   } else {
     setDropdownValue('location', '请选择');
     setDropdownValue('calendar', '请选择');

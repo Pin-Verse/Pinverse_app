@@ -6,7 +6,6 @@
 
 (function () {
   const API_HOST = window.PINVERSE_API_HOST;
-  const TOKEN_KEY = 'pinverse:token';
 
   const inputEl = document.getElementById('deviceNameInput');
   if (!inputEl || !window.PinVerseDevices) return;
@@ -24,16 +23,13 @@
   });
 
   async function renameDevice(name) {
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) return null;
+    const headers = window.PinVerseAuth.authHeaders(true);
+    if (!headers) return null;
 
     try {
       const res = await fetch(API_HOST + '/devices/' + encodeURIComponent(deviceId), {
         method: 'PUT',
-        headers: {
-          Authorization: 'Bearer ' + token,
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({ device_name: name }),
       });
       const data = await res.json().catch(() => null);

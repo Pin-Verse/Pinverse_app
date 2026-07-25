@@ -351,6 +351,7 @@ body {
   background: var(--panel);
   border-radius: 14px;
   flex: 1 1 auto;
+  min-height: 0;
   display: flex;
   flex-direction: column;
 }
@@ -379,6 +380,7 @@ body {
 .views {
   position: relative;
   flex: 1 1 auto;
+  min-height: 0;
 }
 
 .view {
@@ -386,11 +388,19 @@ body {
   inset: 0;
   display: flex;
   flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
   opacity: 0;
   visibility: hidden;
   transform: translateY(6px);
   transition: opacity 0.3s ease, transform 0.3s ease;
   pointer-events: none;
+}
+
+.view::-webkit-scrollbar {
+  display: none;
 }
 
 .view.is-active {
@@ -427,6 +437,28 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.view[data-view="plan"] {
+  overflow: hidden;
+}
+
+.plan-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0 -4px 16px;
+  padding: 0 4px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.plan-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.view[data-view="plan"] > .pill-btn {
+  flex: 0 0 42px;
 }
 
 .card__title {
@@ -476,6 +508,28 @@ body {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px 16px;
   padding: 4px 0;
+}
+
+.view[data-view="role"] {
+  overflow: hidden;
+}
+
+.role-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0 -4px 16px;
+  padding: 0 4px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.role-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.view[data-view="role"] > .pill-btn {
+  flex: 0 0 42px;
 }
 
 .role-card {

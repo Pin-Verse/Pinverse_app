@@ -99,39 +99,39 @@
       <div class="views">
         <!-- 视图：计划 -->
         <section class="view is-active" data-view="plan">
-          <div class="plan-list" id="planList">
-            <div class="card card--plan is-hidden" id="planCard">
-              <div class="card__text">
-                <div class="card__title">早报</div>
-                <div class="card__subtitle"></div>
+          <div class="plan-scroll">
+            <div class="plan-list" id="planList">
+              <div class="card card--plan is-hidden" id="planCard">
+                <div class="card__text">
+                  <div class="card__title">早报</div>
+                  <div class="card__subtitle"></div>
+                </div>
+                <!-- 设置配置（滑块）图标：点击进入「具体日程」编辑界面 -->
+                <a class="card__action" href="plan-edit.html?mode=edit" aria-label="具体日程设置" data-nav-link>
+                  <svg class="icon" width="17" height="16" viewBox="0 0 17 16" fill="none">
+                    <path d="M2 4.5H11" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+                    <path d="M15 4.5H16" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+                    <circle cx="13" cy="4.5" r="2" stroke="#333" stroke-width="1.3"/>
+                    <path d="M1 11.5H4" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+                    <path d="M8 11.5H16" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
+                    <circle cx="6" cy="11.5" r="2" stroke="#333" stroke-width="1.3"/>
+                  </svg>
+                </a>
               </div>
-              <!-- 设置配置（滑块）图标：点击进入「具体日程」编辑界面 -->
-              <a class="card__action" href="plan-edit.html?mode=edit" aria-label="具体日程设置" data-nav-link>
-                <svg class="icon" width="17" height="16" viewBox="0 0 17 16" fill="none">
-                  <path d="M2 4.5H11" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
-                  <path d="M15 4.5H16" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
-                  <circle cx="13" cy="4.5" r="2" stroke="#333" stroke-width="1.3"/>
-                  <path d="M1 11.5H4" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
-                  <path d="M8 11.5H16" stroke="#333" stroke-width="1.3" stroke-linecap="round"/>
-                  <circle cx="6" cy="11.5" r="2" stroke="#333" stroke-width="1.3"/>
-                </svg>
-              </a>
             </div>
+
+            <div class="plan-empty is-visible" id="planEmpty">正在加载计划…</div>
           </div>
-
-          <div class="plan-empty is-visible" id="planEmpty">正在加载计划…</div>
-
-          <div class="view__spacer"></div>
 
           <a class="pill-btn" href="plan-edit.html?mode=add" id="planAddLink" data-nav-link>新建计划</a>
         </section>
 
         <!-- 视图：角色 -->
         <section class="view" data-view="role">
-          <div class="role-grid" id="characterList" aria-live="polite"></div>
-          <div class="role-list-status is-visible" id="characterListStatus">正在加载角色…</div>
-
-          <div class="view__spacer"></div>
+          <div class="role-scroll">
+            <div class="role-grid" id="characterList" aria-live="polite"></div>
+            <div class="role-list-status is-visible" id="characterListStatus">正在加载角色…</div>
+          </div>
 
           <a class="pill-btn" href="role-add.html" data-nav-link>添加角色</a>
         </section>

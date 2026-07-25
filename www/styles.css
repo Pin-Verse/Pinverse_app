@@ -8,6 +8,20 @@
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
+  /* 全局禁止选中／复制页面文本 */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 输入类元素例外，保持可选中、可复制粘贴 */
+input,
+textarea,
+select,
+[contenteditable="true"],
+[contenteditable=""] {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
 }
 
 :root {

@@ -2,7 +2,7 @@
 // 设备（墨水屏）靠主动轮询 GET /devices/{deviceId}/content 拿到当前该显示的内容，
 // 这里以只读方式拉同一个接口，把设备屏幕正在显示的内容同步到首页的设备预览图（.device__text）。
 //
-// 关键：必须带 slient=true（接口文档中的拼写就是 slient），这是「静默读取」——
+// 关键：必须带 silent=true，这是「静默读取」——
 // 只看屏幕当前显示的内容，不按设备轮询语义消费掉它，免得预览把设备该拿的内容抢走。
 //
 // 接口有两种成功响应：
@@ -42,7 +42,7 @@
     if (!headers) return null;
 
     const url =
-      API_HOST + '/devices/' + encodeURIComponent(deviceId) + '/content?slient=true';
+      API_HOST + '/devices/' + encodeURIComponent(deviceId) + '/content?silent=true';
 
     try {
       const res = await fetch(url, { method: 'GET', headers });

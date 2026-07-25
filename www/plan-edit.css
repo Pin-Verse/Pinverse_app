@@ -119,6 +119,11 @@
   margin-top: 16px;
 }
 
+/* 「一言」不使用天气地点与日程，对应行整体收起（见 plan-edit.js） */
+.plan-edit__row.is-hidden {
+  display: none;
+}
+
 .plan-edit__row-label {
   font-size: 16px;
   font-weight: 600;

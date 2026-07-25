@@ -37,11 +37,29 @@
     <div class="plan-edit__body">
       <div class="plan-edit__card">
         <div class="plan-edit__card-title" id="planEditCardTitle">早报</div>
-        <div class="plan-edit__card-subtitle">AI 自动汇总天气&amp;日程信息，让你一眼 Get 今日重点</div>
+        <!-- 文案随展示类型切换，见 plan-edit.js 的 DISPLAY_TYPES -->
+        <div class="plan-edit__card-subtitle">绑定角色用自己的口吻说一段话，内容里会揉进天气、日程与今日新番</div>
       </div>
 
       <div class="plan-edit__card">
         <div class="plan-edit__row">
+          <span class="plan-edit__row-label">展示类型</span>
+          <div class="dropdown" data-dropdown data-field="displayType">
+            <button class="dropdown__toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
+              <span class="dropdown__value">角色发话</span>
+              <svg class="dropdown__chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M4 6L8 10L12 6" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <ul class="dropdown__menu" role="listbox">
+              <li class="dropdown__option is-selected" role="option" data-value="角色发话">角色发话</li>
+              <li class="dropdown__option" role="option" data-value="一言">一言</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 所在地 / 日历链接只在「角色发话」下生效，选「一言」时由 plan-edit.js 整体隐藏 -->
+        <div class="plan-edit__row" data-smalltalk-only>
           <span class="plan-edit__row-label">所在地</span>
           <div class="dropdown" data-dropdown data-field="location">
             <button class="dropdown__toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
@@ -60,7 +78,7 @@
             </ul>
           </div>
         </div>
-        <div class="plan-edit__row">
+        <div class="plan-edit__row" data-smalltalk-only>
           <span class="plan-edit__row-label">日历链接</span>
           <div class="dropdown" data-dropdown data-field="calendar">
             <button class="dropdown__toggle" type="button" aria-haspopup="listbox" aria-expanded="false">

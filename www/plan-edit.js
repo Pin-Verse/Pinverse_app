@@ -9,6 +9,21 @@
   const deviceId = params.get('deviceId') || localStorage.getItem('pinverse:currentDeviceId');
   const dayNames = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'];
 
+  // 展示类型：后端 display_type 字段（不传默认 smalltalk）与下拉文案的对照
+  const DISPLAY_TYPES = [
+    {
+      value: 'smalltalk',
+      label: '角色发话',
+      subtitle: '绑定角色用自己的口吻说一段话，内容里会揉进天气、日程与今日新番',
+    },
+    {
+      value: 'hitokoto',
+      label: '一言',
+      subtitle: '展示一句诗句 / 台词 / 格言及其出处，不经角色加工',
+    },
+  ];
+  const DEFAULT_DISPLAY_TYPE = DISPLAY_TYPES[0];
+
   const screen = document.querySelector('.plan-edit-screen');
   const titleEl = document.getElementById('planEditTitle');
   const cardTitleEl = document.getElementById('planEditCardTitle');
@@ -21,6 +36,12 @@
   const endTimeInput = document.getElementById('planEndTime');
   const confirmDialog = document.getElementById('confirmDialog');
   const confirmDeleteBtn = confirmDialog.querySelector('[data-action="confirm"]');
+  const cardSubtitleEl = document.querySelector('.plan-edit__card-subtitle');
+  const smalltalkOnlyRows = document.querySelectorAll('[data-smalltalk-only]');
+
+  // 「一言」下天气地点在界面上隐藏，但 PUT 是整份覆盖，仍要把原值原样回传，
+  // 不能传空串把用户之前填的地点洗掉。这里记住加载时拿到的原值。
+  let loadedWeatherLocation = '';
 
   function setDropdownValue(field, value) {
     const dropdown = document.querySelector('.dropdown[data-field="' + field + '"]');
@@ -36,6 +57,26 @@
     return document.querySelector(
       '.dropdown[data-field="' + field + '"] .dropdown__value'
     )?.textContent.trim();
+  }
+
+  function currentDisplayType() {
+    const label = getDropdownValue('displayType');
+    return DISPLAY_TYPES.find((type) => type.label === label) ?? DEFAULT_DISPLAY_TYPE;
+  }
+
+  // 展示类型变化后同步卡片说明，并按类型决定是否展示天气 / 日程相关行
+  function applyDisplayType() {
+    const type = currentDisplayType();
+    cardSubtitleEl.textContent = type.subtitle;
+    smalltalkOnlyRows.forEach((row) => {
+      row.classList.toggle('is-hidden', type.value !== 'smalltalk');
+    });
+  }
+
+  function setDisplayType(value) {
+    const type = DISPLAY_TYPES.find((item) => item.value === value) ?? DEFAULT_DISPLAY_TYPE;
+    setDropdownValue('displayType', type.label);
+    applyDisplayType();
   }
 
   function normalizeTime(value) {
@@ -67,10 +108,9 @@
     const title = schedule.name ?? schedule.title ?? schedule.schedule_name ?? '早报';
     titleEl.textContent = title;
     cardTitleEl.textContent = title;
-    setDropdownValue(
-      'location',
-      schedule.weather_location ?? schedule.location ?? schedule.city ?? '请选择'
-    );
+    loadedWeatherLocation = schedule.weather_location ?? schedule.location ?? schedule.city ?? '';
+    setDisplayType(schedule.display_type ?? DEFAULT_DISPLAY_TYPE.value);
+    setDropdownValue('location', loadedWeatherLocation || '请选择');
     setDropdownValue('calendar', schedule.calendar ?? schedule.calendar_provider ?? '请选择');
     startTimeInput.value = normalizeTime(schedule.start_time ?? schedule.startTime);
     endTimeInput.value = normalizeTime(schedule.end_time ?? schedule.endTime);
@@ -97,25 +137,29 @@
     const selectedDays = Array.from(weekdayItems)
       .filter((item) => item.classList.contains('is-selected'))
       .map((item) => dayNames[Number(item.dataset.day) - 1]);
+    const displayType = currentDisplayType();
+    const isSmalltalk = displayType.value === 'smalltalk';
     const location = getDropdownValue('location');
     const startTime = startTimeInput.value;
     const endTime = endTimeInput.value;
 
-    if (!location || location === '请选择') throw new Error('请选择所在地');
+    if (isSmalltalk && (!location || location === '请选择')) throw new Error('请选择所在地');
     if (!startTime || !endTime) {
       throw new Error('请选择显示时间');
     }
-    if (startTime > endTime) {
-      throw new Error('起始时间不能晚于结束时间');
+    if (startTime >= endTime) {
+      throw new Error('起始时间必须早于结束时间');
     }
     if (!selectedDays.length) throw new Error('请至少选择一个显示日期');
 
     return {
       enabled: true,
+      display_type: displayType.value,
       start_time: startTime.padStart(5, '0'),
       end_time: endTime.padStart(5, '0'),
       weekdays: selectedDays,
-      weather_location: location,
+      // 一言不看这个字段，但整份覆盖的 PUT 要求原样回传，避免洗掉用户已填的地点
+      weather_location: isSmalltalk ? location : loadedWeatherLocation,
     };
   }
 
@@ -157,11 +201,14 @@
   cardTitleEl.textContent = isEdit ? '早报' : '新增计划';
   deleteBtn.classList.toggle('is-hidden-placeholder', !isEdit);
   submitBtn.textContent = isEdit ? '保存' : '新增';
+  applyDisplayType(); // 编辑模式详情拉回前，先按下拉默认值把说明与可见行摆正
 
   if (isEdit) {
     // 凭证从原生安全存储异步读出，就绪后再拉计划详情
     window.PinVerseAuth.onReady(loadSchedule);
   } else {
+    loadedWeatherLocation = '';
+    setDisplayType(DEFAULT_DISPLAY_TYPE.value);
     setDropdownValue('location', '请选择');
     setDropdownValue('calendar', '请选择');
     startTimeInput.value = '';
@@ -199,6 +246,16 @@
       setSubmitting(false);
     }
   });
+
+  // dropdown.js 已负责选中态与文案，这里只在选完之后同步依赖展示类型的界面
+  document
+    .querySelectorAll('.dropdown[data-field="displayType"] .dropdown__option')
+    .forEach((option) => {
+      option.addEventListener('click', () => {
+        applyDisplayType();
+        clearError();
+      });
+    });
 
   weekdayItems.forEach((item) => {
     item.addEventListener('click', () => {

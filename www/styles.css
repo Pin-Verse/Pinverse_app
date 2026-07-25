@@ -268,6 +268,7 @@ body {
   display: flex;
   align-items: flex-start;
   padding: 3cqw;
+  overflow: hidden; /* 正文与出处都已按字数截断，这里只是兜底：不让文字漏到屏幕框外 */
 }
 
 .device__text p {
@@ -276,6 +277,15 @@ body {
   line-height: 1.4;
   color: #000;
   word-break: break-word;
+}
+
+/* 一言的出处：另起一行右对齐，字号与颜色都弱于正文（见 device-content.js） */
+.device__text-source {
+  display: block;
+  margin-top: 0.8cqw;
+  font-size: 1.7cqw;
+  color: #4a4a4a;
+  text-align: right;
 }
 
 /* ---------- 头部标题行 ---------- */

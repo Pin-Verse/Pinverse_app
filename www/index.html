@@ -2,12 +2,35 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="refresh" content="0; url=login.html" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no"
+  />
   <title>PinVerse</title>
-  <script>
-    location.replace('login.html');
-  </script>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      color: #999;
+      font: 14px/1.5 -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+  </style>
 </head>
-<body></body>
+<body>
+  <p>正在启动…</p>
+
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    // 启动路由：安全存储里有仍然有效的 JWT 就直接进首页，否则去登录页。
+    PinVerseAuth.onReady(async () => {
+      const loggedIn = await PinVerseAuth.verify();
+      location.replace(loggedIn ? 'home.html' : 'login.html');
+    });
+  </script>
+</body>
 </html>

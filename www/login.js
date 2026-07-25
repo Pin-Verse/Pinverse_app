@@ -1,9 +1,10 @@
 // PinVerse · 登录
-// 通过 /auth/login 换取 JWT，存入 localStorage 供后续接口鉴权使用（Authorization: Bearer <token>）。
+// 通过 /auth/login 换取 JWT，交给 PinVerseAuth 存进原生安全存储，
+// 供后续接口鉴权使用（Authorization: Bearer <token>）。凭证会一直保留到失效或解绑，
+// 下次冷启动由 index.html 直接进首页，无需再登录一次。
 
 (function () {
   const API_HOST = window.PINVERSE_API_HOST;
-  const TOKEN_KEY = 'pinverse:token';
 
   const screen = document.querySelector('.login-screen');
   const usernameInput = document.getElementById('loginUsername');
@@ -70,7 +71,13 @@
       return;
     }
 
-    localStorage.setItem(TOKEN_KEY, token);
+    try {
+      await window.PinVerseAuth.save(token);
+    } catch (err) {
+      showError('登录凭证保存失败，请重试');
+      setLoading(false);
+      return;
+    }
 
     screen.classList.add('is-leaving');
     setTimeout(() => {

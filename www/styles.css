@@ -467,8 +467,8 @@ body {
 .plan-scroll {
   flex: 1 1 auto;
   min-height: 0;
-  margin: 0 -4px 16px;
-  padding: 0 4px;
+  margin: 0 0 16px;
+  padding: 6px;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: none;
@@ -528,7 +528,7 @@ body {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px 16px;
-  padding: 4px 0;
+  padding: 6px 0;
 }
 
 .view[data-view="role"] {
@@ -538,8 +538,8 @@ body {
 .role-scroll {
   flex: 1 1 auto;
   min-height: 0;
-  margin: 0 -4px 16px;
-  padding: 0 4px;
+  margin: 0 0 16px;
+  padding: 8px 6px;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: none;
@@ -640,6 +640,14 @@ body {
   margin: 4px 0;
 }
 
+.view[data-view="settings"] {
+  gap: 12px;
+}
+
+.view[data-view="settings"] .setting-row {
+  margin: 0;
+}
+
 .setting-row__label {
   font-size: 16px;
   font-weight: 600;
@@ -714,7 +722,9 @@ body {
 .dropdown__toggle {
   display: inline-flex;
   align-items: center;
+  justify-content: space-between;
   gap: 6px;
+  min-width: 77px;
   height: 30px;
   padding: 0 8px 0 12px;
   background: #fafafa;

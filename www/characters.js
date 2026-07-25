@@ -6,6 +6,9 @@
   const TOKEN_KEY = 'pinverse:token';
   const listEl = document.getElementById('characterList');
   const statusEl = document.getElementById('characterListStatus');
+  const devicePhotoEl = document.querySelector('.device__photo');
+  const DEFAULT_CHARACTER_IMAGE = 'assets/avatar-ryo.png';
+  const charactersById = new Map();
   let binding = false;
   let suppressNextClick = false;
 
@@ -29,11 +32,11 @@
   }
 
   function resolveImageUrl(url) {
-    if (!url) return 'assets/avatar-ryo.png';
+    if (!url) return DEFAULT_CHARACTER_IMAGE;
     try {
       return new URL(url, API_HOST + '/').href;
     } catch (err) {
-      return 'assets/avatar-ryo.png';
+      return DEFAULT_CHARACTER_IMAGE;
     }
   }
 
@@ -75,6 +78,18 @@
     });
   }
 
+  function syncSelectedCharacter(device) {
+    const selectedId = boundCharacterId(device);
+    selectCard(selectedId);
+
+    if (!devicePhotoEl) return;
+    const character = selectedId === null ? null : charactersById.get(String(selectedId));
+    devicePhotoEl.src = resolveImageUrl(character?.img_url);
+    devicePhotoEl.alt = character
+      ? (character.name ?? character.character_name ?? '角色') + '的谷子照片'
+      : '谷子照片';
+  }
+
   function createCard(character) {
     const card = document.createElement('div');
     const name = character.name ?? character.character_name ?? '未命名角色';
@@ -89,7 +104,7 @@
     avatar.className = 'role-card__avatar';
     avatar.alt = name;
     avatar.decoding = 'async';
-    avatar.src = 'assets/avatar-ryo.png';
+    avatar.src = DEFAULT_CHARACTER_IMAGE;
 
     const nameEl = document.createElement('div');
     nameEl.className = 'role-card__name';
@@ -208,10 +223,13 @@
       const response = await fetch(API_HOST + '/characters', { method: 'GET', headers });
       if (!response.ok) throw new Error('HTTP ' + response.status);
       const characters = extractCharacters(await response.json());
+      charactersById.clear();
+      characters.forEach((character) => {
+        const id = characterId(character);
+        if (id !== null) charactersById.set(String(id), character);
+      });
       listEl.replaceChildren(...characters.map(createCard));
-      const device = window.PinVerseDevices?.getCurrent();
-      const selectedId = boundCharacterId(device);
-      if (selectedId !== null) selectCard(selectedId);
+      syncSelectedCharacter(window.PinVerseDevices?.getCurrent());
       setStatus(characters.length ? '' : '暂无角色');
     } catch (err) {
       listEl.replaceChildren();
@@ -270,16 +288,13 @@
 
     window.PinVerseDevices?.setCurrentCharacter(characterId, device.device_id);
     const currentDevice = window.PinVerseDevices?.getCurrent();
-    const selectedId =
-      currentDevice?.device_id === device.device_id ? characterId : boundCharacterId(currentDevice);
-    selectCard(selectedId);
+    syncSelectedCharacter(currentDevice);
     setStatus('');
   });
 
   window.PinVerseDevices?.onChange((device) => {
     if (binding) return;
-    const selectedId = boundCharacterId(device);
-    if (selectedId !== null) selectCard(selectedId);
+    syncSelectedCharacter(device);
   });
 
   loadCharacters();

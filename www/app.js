@@ -34,6 +34,8 @@
   const planEmpty = document.getElementById('planEmpty');
   const planAddLink = document.getElementById('planAddLink');
   let scheduleLoadVersion = 0;
+  let renderedDeviceId; // undefined 表示还没跑过一次加载
+  let renderedSignature = null; // 已渲染内容的指纹，用来判断本轮拉取是否真的有变化
 
   function scheduleId(schedule) {
     return schedule?.id ?? schedule?.brief_id ?? schedule?.schedule_id ?? null;
@@ -47,6 +49,19 @@
     return values
       .map((day) => day.replace('星期', '周'))
       .join('、');
+  }
+
+  // 计划列表的指纹：只包含卡片上真正展示的字段，避免后端返回无关字段变动就重绘
+  function schedulesSignature(schedules) {
+    return JSON.stringify(
+      schedules.map((schedule) => [
+        scheduleId(schedule),
+        schedule?.name ?? schedule?.title ?? schedule?.schedule_name ?? '',
+        schedule?.start_time ?? schedule?.startTime ?? '',
+        schedule?.end_time ?? schedule?.endTime ?? '',
+        schedule?.weekdays ?? schedule?.days ?? null,
+      ]),
+    );
   }
 
   function renderSchedules(schedules, deviceId) {
@@ -72,33 +87,50 @@
     planEmpty.classList.remove('is-visible');
   }
 
+  // 设备状态是轮询刷新的（见 device-status.js），本函数会被反复调用。
+  // 为避免每次轮询都「清空 → 正在加载 → 重新渲染」地闪一下，这里只在
+  // 首次加载和切换设备时清空并给出加载提示；同一台设备的后续刷新静默进行，
+  // 拉到的内容与已渲染内容不同（比如后端新增了一条计划）时才更新 DOM。
   async function loadSchedules(device) {
     const version = ++scheduleLoadVersion;
-    planList.replaceChildren();
-    planEmpty.classList.add('is-visible');
+    const deviceId = device?.device_id ?? null;
+    const isDeviceChanged = deviceId !== renderedDeviceId;
 
-    if (!device?.device_id) {
-      planEmpty.textContent = '暂无设备';
+    if (isDeviceChanged) {
+      renderedDeviceId = deviceId;
+      renderedSignature = null;
+      planList.replaceChildren();
+      planEmpty.textContent = deviceId ? '正在加载计划…' : '暂无设备';
+      planEmpty.classList.add('is-visible');
+    }
+
+    if (!deviceId) {
       planAddLink.href = 'plan-edit.html?mode=add';
       return;
     }
 
-    planEmpty.textContent = '正在加载计划…';
-    planAddLink.href =
-      'plan-edit.html?mode=add&deviceId=' + encodeURIComponent(device.device_id);
+    planAddLink.href = 'plan-edit.html?mode=add&deviceId=' + encodeURIComponent(deviceId);
 
     try {
-      const schedules = await window.PinVerseSchedules.list(device.device_id);
+      const schedules = await window.PinVerseSchedules.list(deviceId);
       if (version !== scheduleLoadVersion) return;
+
       const validSchedules = schedules.filter((schedule) => scheduleId(schedule) !== null);
+      const signature = schedulesSignature(validSchedules);
+      if (signature === renderedSignature) return; // 内容没变，不动 DOM
+      renderedSignature = signature;
+
       if (validSchedules.length) {
-        renderSchedules(validSchedules, device.device_id);
+        renderSchedules(validSchedules, deviceId);
       } else {
+        planList.replaceChildren();
         planEmpty.textContent = '暂无计划';
+        planEmpty.classList.add('is-visible');
       }
     } catch (err) {
       if (version !== scheduleLoadVersion) return;
-      planEmpty.textContent = '计划加载失败，请稍后重试';
+      // 轮询失败时保留已渲染的计划，只有一次都没成功过才提示失败
+      if (renderedSignature === null) planEmpty.textContent = '计划加载失败，请稍后重试';
     }
   }
 

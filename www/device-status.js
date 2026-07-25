@@ -11,7 +11,7 @@
   const API_HOST = window.PINVERSE_API_HOST;
   const TOKEN_KEY = 'pinverse:token';
   const CURRENT_DEVICE_KEY = 'pinverse:currentDeviceId';
-  const POLL_INTERVAL_MS = 30000;
+  const POLL_INTERVAL_MS = 5000;
 
   const dotEl = document.getElementById('deviceStatusDot');
   const textEl = document.getElementById('deviceStatusText');

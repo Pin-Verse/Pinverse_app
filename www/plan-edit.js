@@ -17,6 +17,8 @@
   const submitBtn = document.getElementById('planEditSubmitBtn');
   const errorEl = document.getElementById('planEditError');
   const weekdayItems = document.querySelectorAll('.weekday-picker__item');
+  const startTimeInput = document.getElementById('planStartTime');
+  const endTimeInput = document.getElementById('planEndTime');
   const confirmDialog = document.getElementById('confirmDialog');
   const confirmDeleteBtn = confirmDialog.querySelector('[data-action="confirm"]');
 
@@ -34,6 +36,12 @@
     return document.querySelector(
       '.dropdown[data-field="' + field + '"] .dropdown__value'
     )?.textContent.trim();
+  }
+
+  function normalizeTime(value) {
+    const match = String(value ?? '').match(/^(\d{1,2}):(\d{2})/);
+    if (!match) return '';
+    return match[1].padStart(2, '0') + ':' + match[2];
   }
 
   function normalizeDay(day) {
@@ -64,8 +72,8 @@
       schedule.weather_location ?? schedule.location ?? schedule.city ?? '请选择'
     );
     setDropdownValue('calendar', schedule.calendar ?? schedule.calendar_provider ?? '请选择');
-    setDropdownValue('start-time', schedule.start_time ?? schedule.startTime);
-    setDropdownValue('end-time', schedule.end_time ?? schedule.endTime);
+    startTimeInput.value = normalizeTime(schedule.start_time ?? schedule.startTime);
+    endTimeInput.value = normalizeTime(schedule.end_time ?? schedule.endTime);
     setWeekdaySelection(schedule.weekdays ?? schedule.days ?? []);
   }
 
@@ -90,12 +98,15 @@
       .filter((item) => item.classList.contains('is-selected'))
       .map((item) => dayNames[Number(item.dataset.day) - 1]);
     const location = getDropdownValue('location');
-    const startTime = getDropdownValue('start-time');
-    const endTime = getDropdownValue('end-time');
+    const startTime = startTimeInput.value;
+    const endTime = endTimeInput.value;
 
     if (!location || location === '请选择') throw new Error('请选择所在地');
-    if (!startTime || startTime === '请选择' || !endTime || endTime === '请选择') {
+    if (!startTime || !endTime) {
       throw new Error('请选择显示时间');
+    }
+    if (startTime > endTime) {
+      throw new Error('起始时间不能晚于结束时间');
     }
     if (!selectedDays.length) throw new Error('请至少选择一个显示日期');
 
@@ -152,8 +163,8 @@
   } else {
     setDropdownValue('location', '请选择');
     setDropdownValue('calendar', '请选择');
-    setDropdownValue('start-time', '请选择');
-    setDropdownValue('end-time', '请选择');
+    startTimeInput.value = '';
+    endTimeInput.value = '';
     setWeekdaySelection([]);
     if (!deviceId) {
       showError('请先选择一个有效设备');
@@ -193,6 +204,10 @@
       item.classList.toggle('is-selected');
       clearError();
     });
+  });
+
+  [startTimeInput, endTimeInput].forEach((input) => {
+    input.addEventListener('change', clearError);
   });
 
   function closeConfirmDialog() {

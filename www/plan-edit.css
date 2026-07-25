@@ -165,13 +165,30 @@
   gap: 12px;
 }
 
-.time-range .dropdown {
+.time-range__picker {
   flex: 1 1 0;
+  min-width: 0;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.time-range .dropdown__toggle {
-  width: 100%;
-  justify-content: space-between;
+.time-range__picker:focus {
+  border-color: var(--role-card-border);
+  box-shadow: 0 0 0 2px rgba(212, 218, 250, 0.45);
+}
+
+.time-range__picker::-webkit-calendar-picker-indicator {
+  cursor: pointer;
 }
 
 .time-range__sep {

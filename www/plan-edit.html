@@ -91,29 +91,21 @@
         </div>
 
         <div class="time-range">
-          <div class="dropdown" data-dropdown data-field="start-time">
-            <button class="dropdown__toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
-              <span class="dropdown__value">8:00</span>
-              <svg class="dropdown__chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 6L8 10L12 6" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <ul class="dropdown__menu" role="listbox">
-              <li class="dropdown__option is-selected" role="option" data-value="8:00">8:00</li>
-            </ul>
-          </div>
+          <input
+            class="time-range__picker"
+            id="planStartTime"
+            type="time"
+            step="60"
+            aria-label="开始时间"
+          />
           <span class="time-range__sep">～</span>
-          <div class="dropdown" data-dropdown data-field="end-time">
-            <button class="dropdown__toggle" type="button" aria-haspopup="listbox" aria-expanded="false">
-              <span class="dropdown__value">8:00</span>
-              <svg class="dropdown__chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 6L8 10L12 6" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <ul class="dropdown__menu" role="listbox">
-              <li class="dropdown__option is-selected" role="option" data-value="8:00">8:00</li>
-            </ul>
-          </div>
+          <input
+            class="time-range__picker"
+            id="planEndTime"
+            type="time"
+            step="60"
+            aria-label="结束时间"
+          />
         </div>
       </div>
 
